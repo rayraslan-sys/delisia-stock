@@ -1,317 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="theme-color" content="#1a1410"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <title>Délisia Stock Check</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:Georgia,serif;background:#f5f0e8;color:#1a1410;min-height:100vh;}
-button{font-family:Georgia,serif;cursor:pointer;}
-input,select{font-family:Georgia,serif;}
-.app{max-width:600px;margin:0 auto;}
-#header{background:#1a1410;color:#f5f0e8;padding:14px 16px;position:sticky;top:0;z-index:100;border-bottom:3px solid #c9a84c;}
-.header-row{display:flex;justify-content:space-between;align-items:center;}
-.brand-sub{font-size:10px;letter-spacing:3px;color:#c9a84c;text-transform:uppercase;}
-.brand-title{font-size:17px;font-weight:bold;letter-spacing:1px;}
-.tab-btns{display:flex;gap:6px;}
-.tab-btn{padding:6px 12px;border-radius:20px;border:1px solid #c9a84c;font-size:11px;letter-spacing:1px;}
-.tab-btn.active{background:#c9a84c;color:#1a1410;}
-.tab-btn.inactive{background:transparent;color:#c9a84c;}
-.progress-row{display:flex;justify-content:space-between;font-size:11px;color:#c9a84c;margin:10px 0 4px;}
-.progress-track{height:3px;background:#3a3020;border-radius:2px;}
-.progress-fill{height:3px;background:#c9a84c;border-radius:2px;transition:width 0.4s;}
-.name-banner{padding:12px 16px;background:#fffbe6;border-bottom:1px solid #e0d8c8;}
-.search-bar{padding:10px 16px;background:#fff;border-bottom:1px solid #e0d8c8;}
-.cat-tabs{display:flex;overflow-x:auto;padding:10px 16px;gap:8px;background:#fff;border-bottom:1px solid #e0d8c8;-webkit-overflow-scrolling:touch;}
-.cat-tabs::-webkit-scrollbar{display:none;}
-.cat-tab{flex-shrink:0;padding:6px 12px;border-radius:20px;font-size:12px;white-space:nowrap;border:1px solid #e0d8c8;}
-.cat-tab.active{border-color:#1a1410;background:#1a1410;color:#f5f0e8;}
-.cat-tab.inactive{background:#f5f0e8;color:#1a1410;}
-.items-list{padding:8px 16px 32px;}
-.item-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;}
-.item-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-.item-name{font-weight:bold;font-size:15px;}
-.item-par{font-size:11px;color:#8a7a5a;}
-.status-badge{padding:3px 10px;border-radius:20px;font-size:12px;font-weight:bold;white-space:nowrap;}
-.status-btns{display:flex;gap:6px;margin-bottom:8px;}
-.status-btn{flex:1;padding:9px 4px;border-radius:8px;font-size:12px;border:2px solid #e0d8c8;background:#f9f6f0;color:#8a7a5a;}
-.item-inputs{display:flex;gap:8px;}
-.item-input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid #e0d8c8;font-size:13px;background:#f9f6f0;width:0;}
-.text-input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #c9a84c;font-size:15px;background:#fff;box-sizing:border-box;}
-.search-input{width:100%;padding:8px 12px;border-radius:8px;border:1px solid #ddd;font-size:14px;background:#f9f6f0;box-sizing:border-box;}
-.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #e0d8c8;}
-.big-btn{width:100%;padding:14px;border-radius:12px;color:#fff;border:none;font-size:15px;font-weight:bold;margin-bottom:14px;font-family:Georgia,serif;}
-.mgr-tabs{display:flex;background:#fff;border-bottom:1px solid #e0d8c8;}
-.mgr-tab{flex:1;padding:13px 4px;border:none;background:transparent;font-size:12px;font-family:Georgia,serif;border-bottom:3px solid transparent;}
-.footer{padding:12px 16px;text-align:center;font-size:12px;color:#8a7a5a;border-top:1px solid #e0d8c8;background:#fff;}
-.footer span{color:#c9a84c;text-decoration:underline;cursor:pointer;}
-.cat-label{font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin:12px 0 8px;}
-.pin-overlay{position:fixed;inset:0;background:#f5f0e8;display:flex;align-items:center;justify-content:center;z-index:999;}
-.pin-box{background:#fff;border-radius:16px;padding:32px;width:300px;text-align:center;border:1px solid #e0d8c8;}
-.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f5f0e8;align-items:center;}
-.tag{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;}
-.custom-tag{font-size:10px;color:#c9a84c;margin-left:6px;font-style:italic;}
-.warn{background:#fffbe6;border:1px solid #c9a84c;border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;line-height:1.5;}
-.dashed{border:2px dashed #c9a84c!important;}
-.field-label{font-size:11px;color:#8a7a5a;margin-bottom:4px;}
-.field{margin-bottom:8px;}
-.full-input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid #e0d8c8;font-size:13px;background:#f9f6f0;box-sizing:border-box;font-family:Georgia,serif;}
-.par-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f5f0e8;}
-.par-input{width:56px;padding:6px 8px;border-radius:6px;font-size:13px;text-align:center;font-family:Georgia,serif;}
-.schedule-card{border-radius:12px;padding:16px;margin-bottom:12px;}
-.schedule-inner{background:rgba(255,255,255,0.6);border-radius:8px;padding:10px 12px;}
-.reminder{padding:0 16px 4px;}
-.rem-card{border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
-.hidden{display:none!important;}
-.save-btn{width:100%;padding:14px;border-radius:12px;background:#1a1410;color:#c9a84c;border:none;font-weight:bold;font-size:15px;font-family:Georgia,serif;margin-bottom:14px;}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f0eb; color: #2c2c2c; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #2c2c2c 0%, #4a3728 100%); color: white; padding: 16px 20px 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+  .header-sub { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+  .header-date { font-size: 12px; opacity: 0.8; }
+  .sync-status { font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 600; }
+  .sync-ok { background: #27ae60; color: white; }
+  .sync-err { background: #e74c3c; color: white; }
+  .sync-loading { background: #f39c12; color: white; }
+  .day-banner { background: #e8f5e9; border-left: 4px solid #27ae60; padding: 10px 16px; font-size: 13px; color: #2e7d32; font-weight: 600; }
+  .tabs { display: flex; overflow-x: auto; background: #fff; border-bottom: 2px solid #e0d6cc; scrollbar-width: none; position: sticky; top: 72px; z-index: 90; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex-shrink: 0; padding: 12px 16px; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: #888; white-space: nowrap; transition: all 0.2s; }
+  .tab.active { color: #4a3728; border-bottom-color: #4a3728; }
+  .section { padding: 12px 16px; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.2s; }
+  .item-info { flex: 1; }
+  .item-name { font-size: 15px; font-weight: 600; }
+  .item-detail { font-size: 12px; color: #999; margin-top: 2px; }
+  .item-order-flag { font-size: 11px; color: #e67e22; font-weight: 600; margin-top: 2px; }
+  .status-btn { width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 18px; cursor: pointer; margin-left: 8px; display: flex; align-items: center; justify-content: center; transition: transform 0.15s; }
+  .status-btn:active { transform: scale(0.9); }
+  .btn-ok { background: #e8f5e9; } .btn-low { background: #fff8e1; } .btn-out { background: #ffebee; } .btn-na { background: #f3f3f3; }
+  .item.status-ok { border-left: 4px solid #27ae60; } .item.status-low { border-left: 4px solid #f39c12; } .item.status-out { border-left: 4px solid #e74c3c; }
+  .legend { display: flex; gap: 12px; padding: 10px 16px; background: white; border-bottom: 1px solid #eee; font-size: 12px; flex-wrap: wrap; }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .manager-section { padding: 16px; }
+  .manager-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 10px; transition: opacity 0.2s; }
+  .manager-btn:active { opacity: 0.8; } .btn-reset { background: #e74c3c; color: white; } .btn-export { background: #2980b9; color: white; }
+  .pin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 200; }
+  .pin-box { background: white; border-radius: 20px; padding: 32px 24px; width: 300px; text-align: center; }
+  .pin-box h2 { margin-bottom: 8px; } .pin-box p { font-size: 13px; color: #888; margin-bottom: 20px; }
+  .pin-dots { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
+  .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #4a3728; background: transparent; transition: background 0.2s; }
+  .pin-dot.filled { background: #4a3728; }
+  .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .pin-key { padding: 16px; border-radius: 12px; border: 1px solid #ddd; font-size: 20px; font-weight: 600; cursor: pointer; background: #f9f9f9; }
+  .pin-key:active { background: #e0d6cc; } .pin-error { color: #e74c3c; font-size: 13px; margin-top: 8px; }
+  .summary-box { background: white; border-radius: 12px; padding: 16px; margin: 12px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .summary-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+  .summary-row:last-child { border-bottom: none; }
+  .tag-ok { color: #27ae60; font-weight: 700; } .tag-low { color: #f39c12; font-weight: 700; } .tag-out { color: #e74c3c; font-weight: 700; }
+  .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #2c2c2c; color: white; padding: 10px 20px; border-radius: 20px; font-size: 13px; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .last-updated { font-size: 11px; color: #bbb; text-align: center; padding: 8px; }
+  .order-reminder { background: #fff3e0; border-left: 4px solid #e67e22; padding: 10px 16px; margin: 8px 16px; border-radius: 0 8px 8px 0; font-size: 13px; color: #bf360c; }
+  .order-reminder strong { display: block; margin-bottom: 4px; }
 </style>
 </head>
 <body>
-<div class="app">
-
-<div id="pinOverlay" class="pin-overlay hidden">
+<div class="header">
+  <h1>☕ Délisia Stock Check</h1>
+  <div class="header-sub">
+    <span class="header-date" id="headerDate"></span>
+    <span class="sync-status sync-loading" id="syncStatus">Connecting…</span>
+  </div>
+</div>
+<div class="day-banner" id="dayBanner"></div>
+<div class="legend"><span>✅ OK</span><span>⚠️ Low</span><span>❌ Out</span><span>➖ N/A</span></div>
+<div class="tabs" id="tabs"></div>
+<div id="content"></div>
+<div class="last-updated" id="lastUpdated"></div>
+<div class="toast" id="toast"></div>
+<div class="pin-overlay" id="pinOverlay" style="display:none">
   <div class="pin-box">
-    <div style="font-size:36px;margin-bottom:8px;">🔒</div>
-    <div style="font-weight:bold;font-size:18px;margin-bottom:4px;">Admin Access</div>
-    <div style="font-size:13px;color:#8a7a5a;margin-bottom:20px;">Enter your PIN to continue</div>
-    <input type="password" inputmode="numeric" maxlength="6" id="pinInput" placeholder="• • • •"
-      style="width:100%;padding:12px;border-radius:8px;border:1.5px solid #c9a84c;font-size:22px;text-align:center;letter-spacing:8px;box-sizing:border-box;font-family:Georgia,serif;"/>
-    <div id="pinErr" class="hidden" style="color:#9b2226;font-size:12px;margin-top:6px;">Incorrect PIN</div>
-    <div style="display:flex;gap:10px;margin-top:16px;">
-      <button onclick="cancelPin()" style="flex:1;padding:12px;border-radius:8px;border:1px solid #e0d8c8;background:#f5f0e8;font-size:14px;">Cancel</button>
-      <button onclick="submitPin()" style="flex:1;padding:12px;border-radius:8px;border:none;background:#1a1410;color:#c9a84c;font-weight:bold;font-size:14px;">Enter</button>
-    </div>
+    <h2>🔐 Manager Access</h2>
+    <p>Enter your 4-digit PIN</p>
+    <div class="pin-dots"><div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div><div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div></div>
+    <div class="pin-grid" id="pinGrid"></div>
+    <div class="pin-error" id="pinError"></div>
   </div>
-</div>
-
-<div id="header">
-  <div class="header-row">
-    <div>
-      <div class="brand-sub">Délisia Panino & Espresso</div>
-      <div class="brand-title">Stock Check</div>
-    </div>
-    <div class="tab-btns">
-      <button class="tab-btn active" id="btnStaff" onclick="switchView('staff')">Staff</button>
-      <button class="tab-btn inactive" id="btnManager" onclick="switchView('manager')">🔒 Manager</button>
-    </div>
-  </div>
-  <div class="progress-row">
-    <span id="todayDate"></span>
-    <span id="progressText">0/0 · 0%</span>
-  </div>
-  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-</div>
-
-<div id="staffView">
-  <div id="nameBanner" class="name-banner">
-    <p style="font-size:12px;color:#8a7a5a;margin-bottom:6px;">👋 Enter your name before starting</p>
-    <input type="text" id="nameInput" placeholder="Your name..." class="text-input" oninput="updateName(this.value)"/>
-  </div>
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="🔍 Search items..." class="search-input" oninput="handleSearch(this.value)"/>
-  </div>
-  <div class="cat-tabs" id="catTabs"></div>
-  <div id="reminderArea"></div>
-  <div class="items-list" id="itemsList"></div>
-  <div class="footer hidden" id="staffFooter">
-    Logged as <strong id="footerName"></strong> · <span onclick="clearName()">Change</span>
-  </div>
-</div>
-
-<div id="managerView" class="hidden">
-  <div class="mgr-tabs">
-    <button class="mgr-tab" id="mTab0" onclick="setMgrTab(0)">📊 Overview</button>
-    <button class="mgr-tab" id="mTab1" onclick="setMgrTab(1)">⚖️ Par Levels</button>
-    <button class="mgr-tab" id="mTab2" onclick="setMgrTab(2)">📅 Schedule</button>
-  </div>
-  <div id="mgrOverview" style="padding:16px;"></div>
-  <div id="mgrPar" class="hidden" style="padding:16px;"></div>
-  <div id="mgrSchedule" class="hidden" style="padding:16px;"></div>
-</div>
-
 </div>
 <script>
-const ORDER_SCHEDULE=[
-  {cats:["MILK"],label:"Milk Order",days:"Tuesday & Thursday",cutoff:"2:00pm sharp",color:"#1d6a8a",bg:"#caf0f8",icon:"🥛"},
-  {cats:["ANTIPASTO"],label:"Antipasto Order",days:"Friday",cutoff:"for Saturday delivery",color:"#6a4c1d",bg:"#f5e6cc",icon:"🫙"},
-  {cats:["MEATS","CHEESES"],label:"Meats & Cheeses Order",days:"Every evening",cutoff:"4:30pm",color:"#6a1d1d",bg:"#ffd6d6",icon:"🥩"},
-  {cats:["MATCHA"],label:"Matcha Order",days:"Monday & Friday",cutoff:"2:00pm sharp",color:"#2d6a4f",bg:"#d8f3dc",icon:"🍵"},
-  {cats:["COOKIES & SWEETS"],label:"Cookies Order",days:"Sunday & Thursday",cutoff:"Sunday 3pm · Thursday 2pm",color:"#6a2d6a",bg:"#f0d8f3",icon:"🍪"},
-];
-const BASE_CATS={
-  "CHEESES":["Mozzarella","Gorgonzola","Ricotta","Burrata","Provolone","Stracciatella","Pecorino","Parmesan","Fior Di Latte","Mascarpone"],
-  "MEATS":["Prosciutto","Ham","Salami","Spicy Salami","Mortadella","Pastrami","Pancetta","Bresaola","Porchetta","Olive Mortadella"],
-  "FRUIT & VEG":["Rocket","Tomato","Pear","Melon","Figs"],
-  "ANTIPASTO":["Sun Dried Tomato","Mixed Olives","Red Peppers","Capers","Onion Jam","Pickles","Eggplant","Green Olives","Sauerkraut","Artichoke","Olive Tapenade Spread","Chilli"],
-  "SAUCES":["Pesto","Mayonnaise","Mustard","Tomato Sauce","Worcestershire Sauce","Nap Sauce","Truffle"],
-  "PANTRY":["Olive Oil","Paprika","Honey","Salt & Pepper","Pistachio","Balsamic Glaze","Garlic Powder","Walnuts","Biscoff","Butter","Vegemite"],
-  "MILK":["Full Cream","Lactose Free","Oat","Almond","Crema Di Caffe","Soy","Skim"],
-  "COFFEE":["Coffee Bags (kg)","Decaf Coffee","Single O Bags (kg)","Cold Brew Filter Bags","Grinder Cleaner","Coffee Machine Cleaner","Chai","Choc Powder","Green Tea","Peppermint Tea","Earl Grey","English Breakfast","Chamomile Tea","Honey","Vanilla Syrup","Caramel Syrup","Hazelnut Syrup","Sugar Syrup","Ice Cream","Cinnamon Sugar","Raw Sugar","Ice Coffee Cup","Req Cups","Large Cups","Piccolo Cups"],
-  "MATCHA":["Matcha Original","Earl Grey Matcha","Mango Matcha","Strawberry Matcha"],
-  "COOKIES & SWEETS":["Biscoff Cookie","Chocolate Chip Pistachio Cookie","Cinnamon Muffin","Marble Butter Boy GF Cookie","Milk Chocolate Butter Boy Cookie","Muesli ButterBoy Cookie","Nutella Butter Boy Cookie","Salted Caramel Butter Boy Cookie","Snickerdoodle Butter Boy Cookie","Triple Choc Butter Boy GF Cookie","White Chocolate Bueno Cookie"],
-  "DRINKS":["Water","Coke Zero","Coke","Sprite","Fanta","Sparkling","Aranciata Rossa","Chinotto","Limonatta","Green Juice","Pineapple Juice","Watermelon Juice","Gingered Apple","Beetroot Juice","Orange Juice"],
-  "PACKAGING":["Uber Bags (Box)","Napkins (Packets)","Sandwich Trays (Sleeves)","Straws (Box)","Cup Trays (Sleeves)","Cling Wrap","Baking Paper","Wooden Spoons","Takeaway Cutlery","Coffee Stirrers","16oz Salad Bowls (Sleeves)","16oz Salad Lids (Sleeves)","Catering Skewers (Packets)","14oz Coffee Clear Cups (Sleeves)","14oz Coffee Clear Lids (Sleeves)","12oz Coffee Paper Cups (Sleeves)","12oz Coffee Sipper Lids (Sleeves)","8oz Coffee Paper Cups (Sleeves)","8oz Coffee Sipper Lids (Sleeves)","4oz Coffee Paper Cups (Sleeves)","4oz Coffee Sipper Lids (Sleeves)","Gloves Medium (Boxes)","Gloves Large (Boxes)","Plain Greaseproof Paper (Packets)","Customised Greaseproof Paper (Packets)","Catering Boxes Large (Box)","Catering Box Large Lids","Catering Box Small","Catering Box Lids Small","Muffin/Cookie Box","Register Rolls (80x80)","EFTPOS Receipt Rolls (57x40)","Use First Stickers","Sandwich 8F Bags (Packets)","Round Sauce Containers 20z","Round Sauce Container Lids 20z","Tray Bags"],
-  "CLEANING PRODUCTS":["Bin Bags","Paper Handtowels","Hairnet (Packets)","Dishwashing Liquid","Bleach","Green Detergent","Blue Chux","Green Chux","Brown/Red Chux","Floor Cleaner","Glass and Window Cleaner","No Rinse Sanitiser","Rinse Aid","Stainless Steel Scourer","Green Sponge","Degreaser","Oven & Grill Cleaner","Vinegar","Stainless Steel Cleaner","Hand Soap","Hand Sanitiser","Mop Head (New)","Pink Cleaning Gloves"]
-};
-const DEFAULT_PAR={"Mozzarella":3,"Gorgonzola":2,"Ricotta":2,"Burrata":4,"Provolone":2,"Stracciatella":2,"Pecorino":2,"Parmesan":2,"Fior Di Latte":2,"Mascarpone":2,"Prosciutto":2,"Ham":2,"Salami":2,"Spicy Salami":2,"Mortadella":2,"Pastrami":2,"Pancetta":2,"Bresaola":2,"Porchetta":2,"Olive Mortadella":2,"Full Cream":4,"Oat":3,"Lactose Free":2,"Soy":2,"Almond":2,"Skim":2,"Crema Di Caffe":2,"Nap Sauce":5,"Pesto":2,"Mayonnaise":2,"Mustard":1,"Tomato Sauce":2,"Matcha Original":5,"Earl Grey Matcha":3,"Mango Matcha":3,"Strawberry Matcha":3,"Coffee Bags (kg)":3,"Decaf Coffee":1,"Chai":2,"Choc Powder":3,"Vanilla Syrup":2,"Caramel Syrup":2,"Hazelnut Syrup":2,"Sugar Syrup":2};
-const ICONS={"CHEESES":"🧀","MEATS":"🥩","FRUIT & VEG":"🥬","ANTIPASTO":"🫙","SAUCES":"🍶","PANTRY":"🫒","MILK":"🥛","COFFEE":"☕","MATCHA":"🍵","COOKIES & SWEETS":"🍪","DRINKS":"🥤","PACKAGING":"📦","CLEANING PRODUCTS":"🧹"};
-const STATUS=[{v:"full",l:"Full",c:"#2d6a4f",bg:"#d8f3dc"},{v:"ok",l:"OK",c:"#1d6a8a",bg:"#caf0f8"},{v:"low",l:"Low",c:"#b5631a",bg:"#fde8c8"},{v:"out",l:"Out",c:"#9b2226",bg:"#ffd6d6"}];
-const PIN="1234",SK="delisia_v3";
-let S={stock:{},par:{...DEFAULT_PAR},name:"",customItems:{},savedAt:null};
-let view="staff",cat="CHEESES",isAdmin=false,mgrTab=0,search="",showOrders=false,epChanges={};
-function cats(){const r={};for(const k in BASE_CATS)r[k]=[...BASE_CATS[k],...(S.customItems[k]||[])];return r;}
-function allItems(){return Object.values(cats()).flat();}
-function gs(i){return S.stock[i]&&S.stock[i].status||"";}
-function gq(i){return S.stock[i]&&S.stock[i].qty||"";}
-function gn(i){return S.stock[i]&&S.stock[i].notes||"";}
-function gp(i){return epChanges[i]!==undefined?epChanges[i]:(S.par[i]!==undefined?S.par[i]:"");}
-function done(){return allItems().filter(i=>gs(i)).length;}
-function pct(){return Math.round(done()/allItems().length*100)||0;}
-function load(){try{const r=localStorage.getItem(SK);if(r){const d=JSON.parse(r);S={stock:d.stock||{},par:Object.assign({},DEFAULT_PAR,d.par||{}),name:d.name||"",customItems:d.customItems||{},savedAt:d.savedAt||null};}}catch(e){}}
-function persist(){S.savedAt=new Date().toISOString();try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
-load();
-document.getElementById("todayDate").textContent=new Date().toLocaleDateString("en-AU",{weekday:"long",day:"numeric",month:"long"});
-document.getElementById("pinInput").addEventListener("keydown",e=>{if(e.key==="Enter")submitPin();});
-renderAll();
-function renderAll(){updateProg();renderName();renderTabs();renderReminder();renderItems();renderFooter();}
-function updateProg(){const d=done(),t=allItems().length,p=pct();document.getElementById("progressText").textContent=d+"/"+t+" · "+p+"%";document.getElementById("progressFill").style.width=p+"%";}
-function renderName(){const b=document.getElementById("nameBanner");b.style.display=S.name?"none":"block";if(!S.name)document.getElementById("nameInput").value="";}
-function updateName(v){S.name=v;persist();renderFooter();renderName();}
-function clearName(){S.name="";persist();renderName();renderFooter();}
-function renderFooter(){const f=document.getElementById("staffFooter");if(S.name){f.classList.remove("hidden");document.getElementById("footerName").textContent=S.name;}else f.classList.add("hidden");}
-function handleSearch(v){search=v;const ct=document.getElementById("catTabs"),ra=document.getElementById("reminderArea");if(v){ct.classList.add("hidden");ra.classList.add("hidden");}else{ct.classList.remove("hidden");ra.classList.remove("hidden");}renderItems();}
-function renderTabs(){
-  const el=document.getElementById("catTabs");el.innerHTML="";
-  Object.entries(cats()).forEach(([k,items])=>{
-    const d=items.filter(i=>gs(i)).length,allDone=d===items.length&&items.length>0,hasLow=items.some(i=>gs(i)==="low"||gs(i)==="out");
-    const b=document.createElement("button");
-    b.className="cat-tab "+(k===cat?"active":"inactive");
-    b.textContent=(ICONS[k]||"")+" "+k+(allDone?" ✓":hasLow?" ⚠️":"");
-    b.onclick=()=>{cat=k;renderTabs();renderReminder();renderItems();};
-    el.appendChild(b);
-  });
-}
-function renderReminder(){
-  const el=document.getElementById("reminderArea");el.innerHTML="";
-  const rel=ORDER_SCHEDULE.filter(s=>s.cats.includes(cat));
-  if(!rel.length){el.style.paddingTop="0";return;}
-  el.style.paddingTop="12px";
-  rel.forEach(s=>{el.innerHTML+=`<div class="reminder"><div class="rem-card" style="background:${s.bg};border:1px solid ${s.color};"><div style="font-size:22px;">${s.icon}</div><div><div style="font-weight:bold;font-size:13px;color:${s.color};">⏰ ${s.label} Deadline</div><div style="font-size:12px;"><strong>${s.days}</strong> · Cut-off: <strong>${s.cutoff}</strong></div></div></div></div>`;});
-}
-function renderItems(){
-  const el=document.getElementById("itemsList");el.innerHTML="";
-  const c=cats();let toRender={};
-  if(search){Object.entries(c).forEach(([k,items])=>{const f=items.filter(i=>i.toLowerCase().includes(search.toLowerCase()));if(f.length)toRender[k]=f;});}
-  else toRender={[cat]:c[cat]||[]};
-  Object.entries(toRender).forEach(([k,items])=>{
-    if(search){const l=document.createElement("div");l.className="cat-label";l.textContent=(ICONS[k]||"")+" "+k;el.appendChild(l);}
-    items.forEach(item=>el.appendChild(buildCard(item,k)));
-  });
-}
-function buildCard(item,k){
-  const status=gs(item),qty=gq(item),notes=gn(item),parV=S.par[item]!==undefined?S.par[item]:DEFAULT_PAR[item],si=STATUS.find(s=>s.v===status);
-  const bc=status==="out"?"#ffd6d6":status==="low"?"#fde8c8":"#e0d8c8";
-  const isC=S.customItems[k]&&S.customItems[k].includes(item);
-  const d=document.createElement("div");d.className="item-card";d.style.border="1px solid "+bc;
-  d.innerHTML=`<div class="item-header"><div><div class="item-name">${item}${isC?'<span class="custom-tag">custom</span>':''}</div>${parV?`<div class="item-par">Par: ${parV}</div>`:''}</div>${si?`<div class="status-badge" style="background:${si.bg};color:${si.c};">${si.l}</div>`:''}</div>
-  <div class="status-btns">${STATUS.map(o=>`<button class="status-btn" style="border-color:${status===o.v?o.c:"#e0d8c8"};background:${status===o.v?o.bg:"#f9f6f0"};color:${status===o.v?o.c:"#8a7a5a"};font-weight:${status===o.v?"bold":"normal"};" onclick="setStatus('${item.replace(/'/g,"\\'")}','${k.replace(/'/g,"\\'")}','${o.v}')">${o.l}</button>`).join("")}</div>
-  <div class="item-inputs"><input type="text" placeholder="Qty / amount..." value="${qty.replace(/"/g,'&quot;')}" class="item-input" onchange="setField('${item.replace(/'/g,"\\'")}','qty',this.value)"/><input type="text" placeholder="Notes..." value="${notes.replace(/"/g,'&quot;')}" class="item-input" onchange="setField('${item.replace(/'/g,"\\'")}','notes',this.value)"/></div>`;
-  return d;
-}
-function setStatus(item,k,v){if(!S.stock[item])S.stock[item]={};S.stock[item].status=v;persist();updateProg();renderTabs();renderItems();}
-function setField(item,field,v){if(!S.stock[item])S.stock[item]={};S.stock[item][field]=v;persist();}
-function switchView(v){
-  if(v==="manager"&&!isAdmin){showPinOverlay();return;}
-  view=v;
-  document.getElementById("staffView").classList.toggle("hidden",v!=="staff");
-  document.getElementById("managerView").classList.toggle("hidden",v!=="manager");
-  document.getElementById("btnStaff").className="tab-btn "+(v==="staff"?"active":"inactive");
-  document.getElementById("btnManager").className="tab-btn "+(v==="manager"?"active":"inactive");
-  document.getElementById("btnManager").textContent=isAdmin?"Manager":"🔒 Manager";
-  if(v==="manager"){setMgrTab(0);}
-}
-function showPinOverlay(){document.getElementById("pinOverlay").classList.remove("hidden");document.getElementById("pinInput").value="";document.getElementById("pinErr").classList.add("hidden");}
-function cancelPin(){document.getElementById("pinOverlay").classList.add("hidden");}
-function submitPin(){
-  if(document.getElementById("pinInput").value===PIN){isAdmin=true;document.getElementById("pinOverlay").classList.add("hidden");switchView("manager");}
-  else{document.getElementById("pinErr").classList.remove("hidden");}
-}
-function setMgrTab(n){
-  mgrTab=n;
-  [0,1,2].forEach(i=>{const t=document.getElementById("mTab"+i);t.style.borderBottom=i===n?"3px solid #c9a84c":"3px solid transparent";t.style.fontWeight=i===n?"bold":"normal";t.style.color=i===n?"#1a1410":"#8a7a5a";});
-  document.getElementById("mgrOverview").classList.toggle("hidden",n!==0);
-  document.getElementById("mgrPar").classList.toggle("hidden",n!==1);
-  document.getElementById("mgrSchedule").classList.toggle("hidden",n!==2);
-  if(n===0)renderOverview();if(n===1)renderPar();if(n===2)renderSched();
-}
-function renderOverview(){
-  const c=cats(),el=document.getElementById("mgrOverview");
-  const needs=Object.entries(c).flatMap(([k,items])=>items.filter(i=>gs(i)==="low"||gs(i)==="out").map(i=>({k,item:i,status:gs(i),qty:gq(i),notes:gn(i)})));
-  let h=`<div class="card"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:6px;">Last Completed By</div><div style="font-size:16px;font-weight:bold;">${S.name||"—"}</div>${S.savedAt?`<div style="font-size:11px;color:#8a7a5a;margin-top:2px;">Saved ${new Date(S.savedAt).toLocaleTimeString("en-AU",{hour:"2-digit",minute:"2-digit"})}</div>`:""}</div>
-  <button class="big-btn" style="background:${needs.length?"#9b2226":"#2d6a4f"};" onclick="toggleOrders()">${showOrders?"Hide":"🛒 View"} Order List · ${needs.length} item${needs.length!==1?"s":""} needed</button>`;
-  if(showOrders){
-    h+=`<div class="card" style="margin-bottom:14px;"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:10px;">Items To Order</div>`;
-    if(!needs.length)h+='<div style="color:#2d6a4f;font-style:italic;">All stock levels OK ✓</div>';
-    else needs.forEach(({k,item,status,qty,notes})=>{const si=STATUS.find(s=>s.v===status);h+=`<div class="row"><div><div style="font-weight:bold;font-size:13px;">${item}</div><div style="font-size:11px;color:#8a7a5a;">${k}${notes?" · "+notes:""}</div></div><div style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:${si?si.bg:""};color:${si?si.c:""}">${status.toUpperCase()}${qty?" · "+qty:""}</div></div>`;});
-    h+=`</div>`;
-  }
-  Object.entries(c).forEach(([k,items])=>{
-    const d=items.filter(i=>gs(i)).length;
-    h+=`<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-weight:bold;font-size:13px;">${ICONS[k]||""} ${k}</div><div style="font-size:11px;color:#8a7a5a;">${d}/${items.length}</div></div>`;
-    items.forEach(item=>{const s=gs(item),q=gq(item),si=STATUS.find(o=>o.v===s);h+=`<div class="row"><span style="font-size:13px;">${item}</span><div style="display:flex;gap:6px;align-items:center;">${q?`<span style="font-size:11px;color:#8a7a5a;">${q}</span>`:""} ${si?`<span class="tag" style="background:${si.bg};color:${si.c};">${si.l}</span>`:'<span style="font-size:11px;color:#c0b090;">—</span>'}</div></div>`;});
-    h+=`</div>`;
-  });
-  el.innerHTML=h;
-}
-function toggleOrders(){showOrders=!showOrders;renderOverview();}
-function renderPar(){
-  const c=cats(),el=document.getElementById("mgrPar");
-  let h=`<div class="warn">🔐 <strong>Admin only.</strong> Set par levels and add new items to any category.</div>
-  <div class="card dashed" style="margin-bottom:14px;">
-    <div style="font-weight:bold;font-size:13px;margin-bottom:12px;">➕ Add New Item</div>
-    <div class="field"><div class="field-label">Category</div><select id="niCat" class="full-input">${Object.keys(c).map(k=>`<option value="${k}">${ICONS[k]||""} ${k}</option>`).join("")}</select></div>
-    <div class="field"><div class="field-label">Item Name</div><input type="text" id="niName" placeholder="e.g. Truffle Honey" class="full-input" style="border:1px solid #e0d8c8;"/></div>
-    <div style="margin-bottom:12px;"><div class="field-label">Par Level (optional)</div><input type="text" inputmode="decimal" id="niPar" placeholder="e.g. 2" class="full-input" style="border:1px solid #e0d8c8;"/></div>
-    <button onclick="addItem()" style="width:100%;padding:12px;border-radius:8px;background:#1a1410;color:#c9a84c;border:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;">➕ Add Item</button>
-    <div id="addMsg" style="margin-top:8px;font-size:12px;text-align:center;font-weight:bold;"></div>
-  </div>`;
-  if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()">💾 Save Par Changes (${Object.keys(epChanges).length} edited)</button>`;
-  Object.entries(c).forEach(([k,items])=>{
-    h+=`<div class="card" style="margin-bottom:10px;"><div style="font-weight:bold;font-size:13px;margin-bottom:10px;">${ICONS[k]||""} ${k}</div>`;
-    items.forEach(item=>{
-      const isC=S.customItems[k]&&S.customItems[k].includes(item),pv=gp(item),changed=epChanges[item]!==undefined;
-      h+=`<div class="par-row"><div style="flex:1;font-size:13px;">${item}${isC?'<span class="custom-tag">custom</span>':''}</div><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:#8a7a5a;">Par:</span><input type="text" inputmode="decimal" value="${pv}" placeholder="—" class="par-input" style="border:1.5px solid ${changed?"#c9a84c":"#e0d8c8"};background:${changed?"#fffbe6":"#f9f6f0"};" onchange="ep('${item.replace(/'/g,"\\'")}',this.value)"/></div></div>`;
-    });
-    h+=`</div>`;
-  });
-  if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()" style="margin-bottom:24px;">💾 Save Par Changes</button>`;
-  el.innerHTML=h;
-}
-function ep(item,v){epChanges[item]=v;renderPar();}
-function savePar(){Object.assign(S.par,epChanges);epChanges={};persist();renderPar();renderItems();}
-function addItem(){
-  const name=document.getElementById("niName").value.trim(),k=document.getElementById("niCat").value,pv=document.getElementById("niPar").value.trim(),msg=document.getElementById("addMsg");
-  if(!name){msg.textContent="Please enter an item name.";msg.style.color="#9b2226";return;}
-  if(Object.values(cats()).flat().map(i=>i.toLowerCase()).includes(name.toLowerCase())){msg.textContent="That item already exists.";msg.style.color="#9b2226";return;}
-  if(!S.customItems[k])S.customItems[k]=[];
-  S.customItems[k].push(name);
-  if(pv)S.par[name]=pv;
-  persist();
-  msg.textContent='✓ "'+name+'" added to '+k;msg.style.color="#2d6a4f";
-  document.getElementById("niName").value="";document.getElementById("niPar").value="";
-  setTimeout(()=>{msg.textContent="";},3000);
-  renderPar();renderTabs();renderItems();
-}
-function renderSched(){
-  const el=document.getElementById("mgrSchedule");
-  let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">Ordering Schedule & Cut-off Times</div>`;
-  ORDER_SCHEDULE.forEach(s=>{h+=`<div class="schedule-card" style="background:${s.bg};border:1px solid ${s.color};"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span style="font-size:28px;">${s.icon}</span><div><div style="font-weight:bold;font-size:15px;color:${s.color};">${s.label}</div><div style="font-size:12px;">Applies to: ${s.cats.join(", ")}</div></div></div><div class="schedule-inner"><div style="font-size:13px;">📅 <strong>Order days:</strong> ${s.days}</div><div style="font-size:13px;margin-top:4px;">⏰ <strong>Cut-off:</strong> ${s.cutoff}</div></div></div>`;});
-  h+=`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #e0d8c8;font-size:12px;color:#8a7a5a;line-height:1.7;"><strong style="color:#1a1410;">Reminder for staff:</strong> These cut-offs are strict. If stock is running low, flag it before the cut-off — don't wait until it runs out.</div>`;
-  el.innerHTML=h;
-}
+const SUPABASE_URL='https://upvfsexbzgquzghkwfjx.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwdmZzZXhiemdxdXpnaGt3Zmp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI4MDUsImV4cCI6MjA5NDM2ODgwNX0.4ADYzigwSxU9zcxt27Cikqj1pHGL1c6-ld42mVFpBHg';
+const MANAGER_PIN='1234';
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const now=new Date();
+const todayName=DAYS[now.getDay()];
+const ORDER_DAYS={'Dairy & Eggs':{days:['Tuesday','Thursday'],cutoff:'8:00am'},'Coffee & Drinks':{days:['Monday','Wednesday','Friday'],cutoff:'9:00am'},'Bread & Pastry':{days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],cutoff:'7:00am'}};
+const CATEGORIES={
+'Dairy & Eggs':[{id:'milk_full',name:'Full Cream Milk',detail:'10L per day avg'},{id:'milk_skim',name:'Skim Milk',detail:'4L per day avg'},{id:'milk_oat',name:'Oat Milk',detail:'6L per day avg'},{id:'milk_soy',name:'Soy Milk',detail:'2L per day avg'},{id:'milk_almond',name:'Almond Milk',detail:'2L per day avg'},{id:'cream',name:'Thickened Cream',detail:'For sauces & cakes'},{id:'butter',name:'Butter',detail:'Unsalted'},{id:'eggs',name:'Eggs',detail:'Free range, 1 tray = 30'},{id:'cheese_brie',name:'Brie',detail:'Board & sandwiches'},{id:'cheese_cheddar',name:'Cheddar',detail:'Sandwiches & toasties'},{id:'cheese_feta',name:'Feta',detail:'Salads & wraps'},{id:'yoghurt',name:'Greek Yoghurt',detail:'Granola bowls'}],
+'Coffee & Drinks':[{id:'coffee_house',name:'House Blend Beans',detail:'3kg per day avg'},{id:'coffee_single',name:'Single Origin Beans',detail:'Pour over & batch'},{id:'decaf',name:'Decaf Beans',detail:'Check weekly'},{id:'cold_brew',name:'Cold Brew Concentrate',detail:'2L bottles'},{id:'chai',name:'Chai Concentrate',detail:'Bottle stock'},{id:'matcha',name:'Matcha Powder',detail:'Ceremonial grade'},{id:'juice_orange',name:'Orange Juice',detail:'Fresh pressed, 2L'},{id:'juice_apple',name:'Apple Juice',detail:'Bottles'},{id:'sparkling',name:'Sparkling Water',detail:'330ml cans'},{id:'syrup_vanilla',name:'Vanilla Syrup',detail:'Monin 1L'},{id:'syrup_caramel',name:'Caramel Syrup',detail:'Monin 1L'},{id:'syrup_hazel',name:'Hazelnut Syrup',detail:'Monin 1L'}],
+'Bread & Pastry':[{id:'sourdough',name:'Sourdough Loaf',detail:'Sliced for toast & sandwiches'},{id:'croissant',name:'Croissants',detail:'Butter croissants'},{id:'croissant_choc',name:'Chocolate Croissant',detail:'Pain au chocolat'},{id:'muffin',name:'Muffins',detail:'Assorted daily'},{id:'scroll',name:'Scrolls',detail:'Cheese & vegemite / cinnamon'},{id:'banana_bread',name:'Banana Bread',detail:'Sliced, per loaf'},{id:'danish',name:'Danish Pastries',detail:'Seasonal assortment'},{id:'bagel',name:'Bagels',detail:'Plain & sesame'},{id:'gluten_free',name:'Gluten Free Bread',detail:'Sliced, clearly labelled'},{id:'wraps',name:'Wraps / Tortillas',detail:'Lunch wraps'}],
+'Fridge & Savoury':[{id:'ham',name:'Shaved Ham',detail:'Sandwiches & toasties'},{id:'turkey',name:'Turkey / Chicken',detail:'Cold sandwiches'},{id:'smoked_salmon',name:'Smoked Salmon',detail:'Bagels & boards'},{id:'avocado',name:'Avocados',detail:'Toast & wraps'},{id:'tomato',name:'Tomatoes',detail:'Cherry & roma'},{id:'spinach',name:'Baby Spinach',detail:'Salads, sides'},{id:'cucumber',name:'Cucumbers',detail:'Sandwiches'},{id:'pesto',name:'Pesto',detail:'Jars'},{id:'hummus',name:'Hummus',detail:'Tubs'},{id:'mayo',name:'Mayonnaise',detail:'Whole egg'},{id:'mustard',name:'Dijon Mustard',detail:'Jars'}],
+'Dry & Pantry':[{id:'sugar_white',name:'White Sugar',detail:'Sachets & bulk'},{id:'sugar_raw',name:'Raw Sugar',detail:'Sachets & bulk'},{id:'honey',name:'Honey',detail:'Squeeze bottles'},{id:'granola',name:'Granola',detail:'Bulk jar'},{id:'choc_sauce',name:'Chocolate Sauce',detail:'Topping & mocha'},{id:'cocoa',name:'Cocoa Powder',detail:'Dusting & drinks'},{id:'salt',name:'Salt',detail:'Kitchen & table'},{id:'pepper',name:'Pepper',detail:'Grinders & bulk'},{id:'olive_oil',name:'Olive Oil',detail:'Cooking & drizzle'},{id:'napkins',name:'Napkins',detail:'Bar & table stock'},{id:'takeaway_cups',name:'Takeaway Cups',detail:'8oz, 12oz, 16oz'},{id:'cup_lids',name:'Cup Lids',detail:'Match to cup sizes'},{id:'coffee_bags',name:'Coffee Bags / Retail',detail:'Retail shelf stock'}],
+'Cleaning':[{id:'dish_soap',name:'Dish Soap',detail:'Commercial grade'},{id:'sanitiser',name:'Food-Safe Sanitiser',detail:'Spray bottles'},{id:'degreaser',name:'Degreaser',detail:'Kitchen surfaces'},{id:'bin_liners',name:'Bin Liners',detail:'Various sizes'},{id:'paper_towel',name:'Paper Towel',detail:'Kitchen rolls'},{id:'gloves',name:'Gloves',detail:'Food safe, size M & L'},{id:'cloths',name:'Cleaning Cloths',detail:'Colour coded'},{id:'mop_heads',name:'Mop Heads',detail:'Replace weekly'},{id:'hand_soap',name:'Hand Soap',detail:'All basins stocked'},{id:'dishwasher_tabs',name:'Dishwasher Tablets',detail:'Commercial machine'}],
+'Manager':[]};
+let state={},activeTab='Dairy & Eggs',pinInput='',managerUnlocked=false;
+async function sbFetch(path,opts={}){const res=await fetch(`${SUPABASE_URL}/rest/v1/${path}`,{...opts,headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=representation',...(opts.headers||{})}});if(!res.ok){const err=await res.text();throw new Error(err);}const text=await res.text();return text?JSON.parse(text):null;}
+async function loadState(){setSyncStatus('loading');try{const rows=await sbFetch('stock_status?select=item_id,status,updated_at&order=item_id');state={};if(rows){rows.forEach(r=>{state[r.item_id]={status:r.status,updated_at:r.updated_at};});}setSyncStatus('ok');updateLastUpdated();return true;}catch(e){setSyncStatus('err');return false;}}
+async function saveItem(itemId,status){setSyncStatus('loading');try{await sbFetch('stock_status',{method:'POST',headers:{'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify({item_id:itemId,status,updated_at:new Date().toISOString()})});state[itemId]={status,updated_at:new Date().toISOString()};setSyncStatus('ok');updateLastUpdated();}catch(e){setSyncStatus('err');showToast('⚠️ Sync failed — check connection');}}
+async function resetAll(){setSyncStatus('loading');try{await sbFetch('stock_status',{method:'DELETE',headers:{'Prefer':''}});state={};setSyncStatus('ok');showToast('✅ All stock reset for new day');renderContent();updateLastUpdated();}catch(e){setSyncStatus('err');showToast('⚠️ Reset failed');}}
+function setSyncStatus(s){const el=document.getElementById('syncStatus');if(s==='ok'){el.textContent='🟢 Live';el.className='sync-status sync-ok';}else if(s==='err'){el.textContent='🔴 Offline';el.className='sync-status sync-err';}else{el.textContent='🟡 Syncing…';el.className='sync-status sync-loading';}}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function updateLastUpdated(){const times=Object.values(state).map(v=>v.updated_at).filter(Boolean).sort();const last=times[times.length-1];if(last){const d=new Date(last);document.getElementById('lastUpdated').textContent=`Last updated: ${d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})}`;}}
+function setHeaderDate(){document.getElementById('headerDate').textContent=now.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});}
+function setDayBanner(){const banner=document.getElementById('dayBanner');const msgs=[];Object.entries(ORDER_DAYS).forEach(([cat,info])=>{if(info.days.includes(todayName)){msgs.push(`📦 ${cat} order day — cut-off ${info.cutoff}`);}});if(msgs.length){banner.textContent=msgs.join('  •  ');banner.style.display='block';}else{banner.style.display='none';}}
+function renderTabs(){const tabsEl=document.getElementById('tabs');tabsEl.innerHTML='';Object.keys(CATEGORIES).forEach(cat=>{const t=document.createElement('div');t.className='tab'+(cat===activeTab?' active':'');t.textContent=cat==='Manager'?'⚙️ Manager':cat;t.onclick=()=>{activeTab=cat;renderTabs();renderContent();};tabsEl.appendChild(t);});}
+function renderContent(){const el=document.getElementById('content');if(activeTab==='Manager'){renderManager(el);return;}const items=CATEGORIES[activeTab];const orderInfo=ORDER_DAYS[activeTab];let html='';if(orderInfo&&orderInfo.days.includes(todayName)){html+=`<div class="order-reminder"><strong>📦 Order day for ${activeTab}</strong>Cut-off: ${orderInfo.cutoff} — make sure levels are checked before then!</div>`;}html+=`<div class="section"><div class="section-title">${activeTab}</div>`;items.forEach(item=>{const s=state[item.id]?.status||'';const cls=s?`item status-${s}`:'item';const orderFlag=s==='low'||s==='out'?`<div class="item-order-flag">⚠️ Add to order list</div>`:'';html+=`<div class="${cls}" id="row-${item.id}"><div class="item-info"><div class="item-name">${item.name}</div><div class="item-detail">${item.detail}</div>${orderFlag}</div><button class="status-btn ${s==='ok'?'btn-ok':'btn-na'}" onclick="setStatus('${item.id}','ok')">✅</button><button class="status-btn ${s==='low'?'btn-low':'btn-na'}" onclick="setStatus('${item.id}','low')">⚠️</button><button class="status-btn ${s==='out'?'btn-out':'btn-na'}" onclick="setStatus('${item.id}','out')">❌</button></div>`;});html+='</div>';el.innerHTML=html;}
+async function setStatus(id,status){const current=state[id]?.status;const newStatus=current===status?'':status;if(newStatus){state[id]={status:newStatus,updated_at:new Date().toISOString()};}else{delete state[id];}renderContent();if(newStatus){await saveItem(id,newStatus);}else{try{await sbFetch(`stock_status?item_id=eq.${id}`,{method:'DELETE',headers:{'Prefer':''}});setSyncStatus('ok');}catch(e){setSyncStatus('err');}}}
+function renderManager(el){if(!managerUnlocked){el.innerHTML='';showPin();return;}const all=Object.values(CATEGORIES).flat();const ok=all.filter(i=>state[i.id]?.status==='ok').length;const low=all.filter(i=>state[i.id]?.status==='low').length;const out=all.filter(i=>state[i.id]?.status==='out').length;const unchecked=all.length-ok-low-out;let orderItems=all.filter(i=>state[i.id]?.status==='low'||state[i.id]?.status==='out');let html=`<div class="summary-box"><div class="section-title" style="margin-bottom:12px">Today's Summary — ${todayName}</div><div class="summary-row"><span>✅ OK</span><span class="tag-ok">${ok}</span></div><div class="summary-row"><span>⚠️ Low</span><span class="tag-low">${low}</span></div><div class="summary-row"><span>❌ Out</span><span class="tag-out">${out}</span></div><div class="summary-row"><span>➖ Not checked</span><span>${unchecked}</span></div></div>`;if(orderItems.length){html+=`<div class="summary-box"><div class="section-title" style="margin-bottom:8px">🛒 Order List</div>`;orderItems.forEach(i=>{const s=state[i.id].status;html+=`<div class="summary-row"><span>${i.name}</span><span class="${s==='out'?'tag-out':'tag-low'}">${s==='out'?'OUT':'LOW'}</span></div>`;});html+='</div>';}html+=`<div class="manager-section"><button class="manager-btn btn-reset" onclick="confirmReset()">🔄 Reset All Stock (New Day)</button><button class="manager-btn btn-export" onclick="exportCSV()">📋 Export Order List</button><button class="manager-btn" style="background:#888;color:white" onclick="lockManager()">🔒 Lock Manager</button></div>`;el.innerHTML=html;}
+function confirmReset(){if(confirm('Reset ALL stock statuses? This cannot be undone.\n\nUse this at the start of each new day.')){resetAll();}}
+function exportCSV(){const all=Object.values(CATEGORIES).flat();const rows=[['Item','Category','Status','Detail']];Object.keys(CATEGORIES).forEach(cat=>{CATEGORIES[cat].forEach(item=>{const s=state[item.id]?.status||'unchecked';if(s==='low'||s==='out'){rows.push([item.name,cat,s.toUpperCase(),item.detail]);}});});const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`delisia-order-${now.toISOString().slice(0,10)}.csv`;a.click();}
+function lockManager(){managerUnlocked=false;activeTab='Dairy & Eggs';renderTabs();renderContent();}
+function showPin(){pinInput='';document.getElementById('pinOverlay').style.display='flex';document.getElementById('pinError').textContent='';updateDots();const grid=document.getElementById('pinGrid');grid.innerHTML='';[1,2,3,4,5,6,7,8,9,'',0,'⌫'].forEach(k=>{const btn=document.createElement('div');btn.className='pin-key';btn.textContent=k;if(k!=='')btn.onclick=()=>pinPress(String(k));grid.appendChild(btn);});}
+function pinPress(k){if(k==='⌫'){pinInput=pinInput.slice(0,-1);}else if(pinInput.length<4){pinInput+=k;}updateDots();if(pinInput.length===4){if(pinInput===MANAGER_PIN){document.getElementById('pinOverlay').style.display='none';managerUnlocked=true;renderManager(document.getElementById('content'));}else{document.getElementById('pinError').textContent='Incorrect PIN. Try again.';pinInput='';updateDots();}}}
+function updateDots(){for(let i=0;i<4;i++){document.getElementById('d'+i).classList.toggle('filled',i<pinInput.length);}}
+async function init(){setHeaderDate();setDayBanner();renderTabs();renderContent();const ok=await loadState();if(ok){renderContent();setInterval(async()=>{await loadState();renderContent();},30000);}}
+init();
 </script>
 </body>
 </html>
