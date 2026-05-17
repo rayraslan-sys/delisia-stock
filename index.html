@@ -153,6 +153,7 @@ input,select{font-family:Georgia,serif;}
       <div class="brand-title">Stock Check</div>
     </div>
     <div class="tab-btns">
+      <span id="syncDot" style="font-size:10px;padding:4px 8px;border-radius:10px;font-weight:bold;background:#b5631a;color:#fde8c8;">⏳</span>
       <button class="tab-btn active" id="btnStaff" onclick="switchView('staff')">Staff</button>
       <button class="tab-btn inactive" id="btnBOH" onclick="switchView('boh')">👁️ BOH</button>
       <button class="tab-btn inactive" id="btnManager" onclick="switchView('manager')">🔒 Mgr</button>
@@ -217,32 +218,84 @@ let S={stock:{},par:Object.assign({},DEFAULT_PAR),customItems:{},customRoles:[],
 let view='staff',cat='CHEESES',isManager=false,isBOH=false,mgrTab=0,search='',showOrders=false,epChanges={},syncTimer=null,pendingCatSwitch=null,pinTarget='manager';
 let catCheckers={};
 
+const SB_URL='https://upvfsexbzgquzghkwfjx.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwdmZzZXhiemdxdXpnaGt3Zmp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTI4MDUsImV4cCI6MjA5NDM2ODgwNX0.4ADYzigwSxU9zcxt27Cikqj1pHGL1c6-ld42mVFpBHg';
+
 function locKey(){return loc==='Forest Lodge'?'fl':'zt';}
 function getStaffList(){return[...new Set([...(DEFAULT_STAFF[loc]||[]),...(S.customStaff||[])])];}
 function getCurrentChecker(){return catCheckers[cat]||'';}
 function esc(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\\'");}
 
-function loadFromLocal(){
-  try{const d=JSON.parse(localStorage.getItem('delisia_'+locKey())||'{}');
-    S.stock=d.stock||{};S.par=Object.assign({},DEFAULT_PAR,d.par||{});
-    S.customItems=d.customItems||{};S.customRoles=d.customRoles||[];S.customStaff=d.customStaff||[];
-  }catch(e){S={stock:{},par:Object.assign({},DEFAULT_PAR),customItems:{},customRoles:[],customStaff:[]};}
-  renderAll();
+function setSyncDot(s){const el=document.getElementById('syncDot');if(!el)return;if(s==='ok'){el.textContent='🟢';el.style.background='#2d6a4f';el.style.color='#d8f3dc';}else if(s==='err'){el.textContent='🔴';el.style.background='#9b2226';el.style.color='#ffd6d6';}else{el.textContent='⏳';el.style.background='#b5631a';el.style.color='#fde8c8';}}
+
+async function sbFetch(path,opts={}){
+  const res=await fetch(SB_URL+'/rest/v1/'+path,{...opts,headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation',...(opts.headers||{})}});
+  if(!res.ok){const e=await res.text();throw new Error(e);}
+  const t=await res.text();return t?JSON.parse(t):null;
 }
-function saveToLocal(){
-  try{localStorage.setItem('delisia_'+locKey(),JSON.stringify({stock:S.stock,par:S.par,customItems:S.customItems,customRoles:S.customRoles,customStaff:S.customStaff}));}catch(e){}
+
+async function loadFromSupabase(){
+  setSyncDot('loading');
+  try{
+    const tbl='delisia_stock_'+locKey();
+    const rows=await sbFetch(tbl+'?select=*&id=eq.1');
+    if(rows&&rows.length){
+      const r=rows[0];
+      try{S.stock=JSON.parse(r.stock||'{}');}catch(e){S.stock={};}
+      try{S.par=Object.assign({},DEFAULT_PAR,JSON.parse(r.par||'{}'));}catch(e){S.par=Object.assign({},DEFAULT_PAR);}
+      try{S.customItems=JSON.parse(r.custom_items||'{}');}catch(e){S.customItems={};}
+      try{S.customRoles=JSON.parse(r.custom_roles||'[]');}catch(e){S.customRoles=[];}
+      try{S.customStaff=JSON.parse(r.custom_staff||'[]');}catch(e){S.customStaff=[];}
+    }
+    setSyncDot('ok');
+    renderAll();
+  }catch(e){
+    setSyncDot('err');
+    console.error('Load error:',e.message);
+  }
 }
-function saveOrderToHistory(){
-  const c=cats();const needs=Object.entries(c).flatMap(([k,items])=>items.filter(i=>gs(i)==='low'||gs(i)==='out').map(i=>({category:k,item:i,status:gs(i),qty:gq(i),notes:gn(i),backups:gb(i)})));
-  try{const key='delisia_hist_'+locKey();const existing=JSON.parse(localStorage.getItem(key)||'[]');
-    const staffSummary=Object.entries(catCheckers).filter(([k,v])=>v).map(([k,v])=>v+' ('+k+')').join(', ')||'Unknown';
-    existing.unshift({staff_name:staffSummary,location:loc,items:needs,saved_at:new Date().toISOString()});
-    const week=new Date(Date.now()-7*24*60*60*1000).toISOString();
-    localStorage.setItem(key,JSON.stringify(existing.filter(e=>e.saved_at>week).slice(0,50)));
-  }catch(e){}
+
+async function saveToSupabase(){
+  setSyncDot('loading');
+  try{
+    const tbl='delisia_stock_'+locKey();
+    await sbFetch(tbl+'?id=eq.1',{
+      method:'PATCH',
+      body:JSON.stringify({
+        stock:JSON.stringify(S.stock),
+        par:JSON.stringify(S.par),
+        custom_items:JSON.stringify(S.customItems),
+        custom_roles:JSON.stringify(S.customRoles),
+        custom_staff:JSON.stringify(S.customStaff),
+        updated_at:new Date().toISOString()
+      })
+    });
+    setSyncDot('ok');
+  }catch(e){setSyncDot('err');console.error('Save error:',e.message);}
 }
-function loadHistory(){try{return JSON.parse(localStorage.getItem('delisia_hist_'+locKey())||'[]');}catch(e){return[];}}
-function persist(){clearTimeout(syncTimer);syncTimer=setTimeout(()=>saveToLocal(),600);}
+
+async function saveOrderToHistory(){
+  const c=cats();
+  const needs=Object.entries(c).flatMap(([k,items])=>items.filter(i=>gs(i)==='low'||gs(i)==='out').map(i=>({category:k,item:i,status:gs(i),qty:gq(i),notes:gn(i),backups:gb(i)})));
+  const staffSummary=Object.entries(catCheckers).filter(([k,v])=>v).map(([k,v])=>v+' ('+k+')').join(', ')||'Unknown';
+  try{
+    await sbFetch('delisia_order_history_'+locKey(),{
+      method:'POST',
+      headers:{'Prefer':'return=minimal'},
+      body:JSON.stringify({staff_name:staffSummary,location:loc,items:needs,saved_at:new Date().toISOString()})
+    });
+  }catch(e){console.error('History save error:',e.message);}
+}
+
+async function loadHistory(){
+  try{
+    const since=new Date(Date.now()-7*24*60*60*1000).toISOString();
+    const rows=await sbFetch('delisia_order_history_'+locKey()+'?saved_at=gte.'+since+'&order=saved_at.desc&limit=50');
+    return rows||[];
+  }catch(e){console.error('History load error:',e.message);return[];}
+}
+
+function persist(){clearTimeout(syncTimer);syncTimer=setTimeout(()=>saveToSupabase(),800);}
 
 function cats(){const r={};for(const k in BASE_CATS)r[k]=[...BASE_CATS[k],...(S.customItems[k]||[])];return r;}
 function allItems(){return Object.values(cats()).flat();}
@@ -263,7 +316,7 @@ function selectLocation(newLoc){
   document.getElementById('locZT').className='loc-btn '+(loc==='Zetland'?'active':'inactive');
   document.getElementById('btnManager').textContent='🔒 Mgr';
   document.getElementById('btnBOH').textContent='👁️ BOH';
-  switchView('staff');loadFromLocal();
+  switchView('staff');loadFromSupabase();
 }
 
 function populateCatChecker(){
@@ -409,7 +462,7 @@ function renderOverview(){
 function toggleOrders(){showOrders=!showOrders;renderOverview();}
 function downloadOrderCSV(){const c=cats();const rows=[['Date','Location','Item','Category','Status','Qty','Backups','Notes']];const d=new Date().toLocaleDateString('en-AU');Object.entries(c).forEach(([k,items])=>{items.filter(i=>gs(i)==='low'||gs(i)==='out').forEach(i=>{rows.push([d,loc,i,k,gs(i).toUpperCase(),gq(i),gb(i),gn(i)]);});});exportCSV(rows,'delisia-order-'+loc.replace(' ','-').toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.csv');}
 function exportCSV(rows,filename){const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
-function confirmReset(){if(confirm('Reset ALL stock for a new day?\n\nOrder list will be saved to history first.')){saveOrderToHistory();S.stock={};catCheckers={};persist();renderAll();renderOverview();}}
+function confirmReset(){if(confirm('Reset ALL stock for a new day?\n\nOrder list will be saved to history first.')){saveOrderToHistory().then(()=>{S.stock={};catCheckers={};persist();renderAll();renderOverview();});}}
 
 function renderPar(){const c=cats(),el=document.getElementById('mgrPar');let h=`<div class="warn-box">🔐 <strong>Manager only.</strong> Set par levels and add custom items.</div><div class="card dashed" style="margin-bottom:14px;"><div style="font-weight:bold;font-size:13px;margin-bottom:12px;">➕ Add New Item</div><div class="field"><div class="field-label">Category</div><select id="niCat" class="full-input">${Object.keys(c).map(k=>`<option value="${k}">${ICONS[k]||''} ${k}</option>`).join('')}</select></div><div class="field"><div class="field-label">Item Name</div><input type="text" id="niName" placeholder="e.g. Truffle Honey" class="full-input" style="border:1px solid #e0d8c8;"/></div><div style="margin-bottom:12px;"><div class="field-label">Par Level (optional)</div><input type="text" inputmode="decimal" id="niPar" placeholder="e.g. 2" class="full-input" style="border:1px solid #e0d8c8;"/></div><button onclick="addItem()" style="width:100%;padding:12px;border-radius:8px;background:#1a1410;color:#c9a84c;border:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;cursor:pointer;">➕ Add Item</button><div id="addMsg" style="margin-top:8px;font-size:12px;text-align:center;font-weight:bold;"></div></div>`;if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()">💾 Save Par Changes (${Object.keys(epChanges).length} edited)</button>`;Object.entries(c).forEach(([k,items])=>{h+=`<div class="card" style="margin-bottom:10px;"><div style="font-weight:bold;font-size:13px;margin-bottom:10px;">${ICONS[k]||''} ${k}</div>`;items.forEach(item=>{const isC=S.customItems[k]&&S.customItems[k].includes(item);const pv=gp(item);const changed=epChanges[item]!==undefined;const ei=esc(item);h+=`<div class="par-row"><div style="flex:1;font-size:13px;">${item}${isC?'<span class="custom-tag">custom</span>':''}</div><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:#8a7a5a;">Par:</span><input type="text" inputmode="decimal" value="${pv}" placeholder="—" class="par-input" style="border:1.5px solid ${changed?'#c9a84c':'#e0d8c8'};background:${changed?'#fffbe6':'#f9f6f0'};" onchange="ep('${ei}',this.value)"/></div></div>`;});h+='</div>';});if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()" style="margin-bottom:24px;">💾 Save Par Changes</button>`;el.innerHTML=h;}
 function ep(item,v){epChanges[item]=v;renderPar();}
@@ -418,7 +471,7 @@ function addItem(){const name=document.getElementById('niName').value.trim();con
 
 function renderSched(){const el=document.getElementById('mgrSchedule');const schedule=ORDER_SCHEDULE[loc]||[];let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · Ordering Schedule</div>`;schedule.forEach(s=>{h+=`<div class="schedule-card" style="background:${s.bg};border:1px solid ${s.color};"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span style="font-size:28px;">${s.icon}</span><div><div style="font-weight:bold;font-size:15px;color:${s.color};">${s.label}</div><div style="font-size:12px;color:${s.color};">Applies to: ${s.cats.join(', ')}</div></div></div><div class="schedule-inner"><div style="font-size:13px;">📅 <strong>Order days:</strong> ${s.days}</div><div style="font-size:13px;margin-top:4px;">⏰ <strong>Cut-off:</strong> ${s.cutoff}</div></div></div>`;});h+=`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #e0d8c8;font-size:12px;color:#8a7a5a;line-height:1.7;"><strong style="color:#1a1410;">Reminder:</strong> Cut-offs are strict. Flag low stock before the cut-off — don't wait until it runs out.</div>`;el.innerHTML=h;}
 
-function renderHistory(){const el=document.getElementById('mgrHistory');const history=loadHistory();if(!history.length){el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div class="card" style="text-align:center;color:#8a7a5a;font-size:13px;font-style:italic;">No history yet. Saves automatically on daily reset.</div>`;return;}let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><button class="save-btn" onclick="downloadHistoryCSV()">📥 Download Full History CSV</button>`;history.forEach(entry=>{const d=new Date(entry.saved_at);const dateStr=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});const timeStr=d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});const items=Array.isArray(entry.items)?entry.items:[];h+=`<div class="history-card"><div class="history-date">📋 ${dateStr}</div><div class="history-meta">⏰ ${timeStr} · By: ${entry.staff_name||'Unknown'} · ${items.length} item${items.length!==1?'s':''}</div>`;if(items.length){items.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span>${i.item} <span style="font-size:10px;color:#8a7a5a;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.backups?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${i.backups}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}${i.qty?' · '+i.qty:''}</span></div></div>`;});}else h+=`<div style="font-size:12px;color:#8a7a5a;font-style:italic;">All stock was OK</div>`;h+='</div>';});el.innerHTML=h;}
+async function renderHistory(){const el=document.getElementById('mgrHistory');el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div style="color:#8a7a5a;font-size:14px;">Loading…</div>`;const history=await loadHistory();if(!history.length){el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div class="card" style="text-align:center;color:#8a7a5a;font-size:13px;font-style:italic;">No history yet. Saves automatically on daily reset.</div>`;return;}let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><button class="save-btn" onclick="downloadHistoryCSV()">📥 Download Full History CSV</button>`;history.forEach(entry=>{const d=new Date(entry.saved_at);const dateStr=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});const timeStr=d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});const items=Array.isArray(entry.items)?entry.items:[];h+=`<div class="history-card"><div class="history-date">📋 ${dateStr}</div><div class="history-meta">⏰ ${timeStr} · By: ${entry.staff_name||'Unknown'} · ${items.length} item${items.length!==1?'s':''}</div>`;if(items.length){items.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span>${i.item} <span style="font-size:10px;color:#8a7a5a;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.backups?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${i.backups}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}${i.qty?' · '+i.qty:''}</span></div></div>`;});}else h+=`<div style="font-size:12px;color:#8a7a5a;font-style:italic;">All stock was OK</div>`;h+='</div>';});el.innerHTML=h;}
 function downloadHistoryCSV(){const history=loadHistory();const rows=[['Date','Time','Staff','Location','Item','Category','Status','Qty','Backups','Notes']];history.forEach(entry=>{const d=new Date(entry.saved_at);const items=Array.isArray(entry.items)?entry.items:[];if(items.length)items.forEach(i=>rows.push([d.toLocaleDateString('en-AU'),d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}),entry.staff_name||'',loc,i.item,i.category,i.status.toUpperCase(),i.qty||'',i.backups||'',i.notes||'']));else rows.push([d.toLocaleDateString('en-AU'),d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}),entry.staff_name||'',loc,'(All OK)','','','','','']);});exportCSV(rows,'delisia-history-'+loc.replace(' ','-').toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.csv');}
 
 function renderRoles(){
@@ -445,7 +498,8 @@ document.getElementById('searchInput').addEventListener('input',e=>handleSearch(
 document.getElementById('catChecker').addEventListener('change',e=>setCatChecker(e.target.value));
 function handleSearch(v){search=v;const ct=document.getElementById('catTabs'),ra=document.getElementById('reminderArea');if(v){ct.classList.add('hidden');ra.classList.add('hidden');}else{ct.classList.remove('hidden');ra.classList.remove('hidden');}renderItems();}
 function setCatChecker(name){catCheckers[cat]=name;renderActiveStaff();renderTabs();renderFooter();}
-loadFromLocal();
+loadFromSupabase();
+setInterval(()=>loadFromSupabase(),30000);
 </script>
 </body>
 </html>
