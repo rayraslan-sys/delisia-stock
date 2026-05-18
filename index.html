@@ -178,6 +178,7 @@ input,select{font-family:Georgia,serif;}
       <option value="">— Select your name —</option>
     </select>
   </div>
+  <div id="checkerPrompt" style="display:none;background:#ffd6d6;border-left:4px solid #9b2226;padding:10px 20px;font-size:13px;color:#9b2226;font-weight:bold;">⚠️ Please select your name before checking stock</div>
   <div class="search-bar"><input type="text" id="searchInput" placeholder="🔍 Search items..." class="search-input"/></div>
   <div class="cat-tabs" id="catTabs"></div>
   <div id="reminderArea"></div>
@@ -405,6 +406,17 @@ function buildCard(item,k){
 }
 
 function setStatus(item,k,v){
+  if(!getCurrentChecker()){
+    document.getElementById('catChecker').style.border='2px solid #9b2226';
+    document.getElementById('catChecker').style.background='#fff5f5';
+    document.getElementById('checkerPrompt').style.display='block';
+    setTimeout(()=>{
+      document.getElementById('catChecker').style.border='1px solid #c9a84c';
+      document.getElementById('catChecker').style.background='#fff';
+      document.getElementById('checkerPrompt').style.display='none';
+    },3000);
+    return;
+  }
   if(!S.stock[item])S.stock[item]={};S.stock[item].status=v;
   const checker=catCheckers[k]||catCheckers[cat]||'';if(checker)S.stock[item].checkedBy=checker;
   persist();updateProg();renderTabs();renderItems();renderActiveStaff();renderFooter();
