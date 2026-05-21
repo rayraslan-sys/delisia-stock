@@ -277,13 +277,15 @@ async function saveToSupabase(){
 
 async function saveOrderToHistory(){
   const c=cats();
-  const needs=Object.entries(c).flatMap(([k,items])=>items.filter(i=>gs(i)==='low'||gs(i)==='out').map(i=>({category:k,item:i,status:gs(i),qty:gq(i),notes:gn(i),backups:gb(i)})));
+  const fullSnapshot=Object.entries(c).flatMap(([k,items])=>
+    items.map(i=>({category:k,item:i,status:gs(i)||'unchecked',qty:gq(i),notes:gn(i),backups:gb(i),checkedBy:gcb(i)}))
+  );
   const staffSummary=Object.entries(catCheckers).filter(([k,v])=>v).map(([k,v])=>v+' ('+k+')').join(', ')||'Unknown';
   try{
     await sbFetch('delisia_order_history_'+locKey(),{
       method:'POST',
       headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({staff_name:staffSummary,location:loc,items:needs,saved_at:new Date().toISOString()})
+      body:JSON.stringify({staff_name:staffSummary,location:loc,items:fullSnapshot,saved_at:new Date().toISOString()})
     });
   }catch(e){console.error('History save error:',e.message);}
 }
@@ -483,8 +485,49 @@ function addItem(){const name=document.getElementById('niName').value.trim();con
 
 function renderSched(){const el=document.getElementById('mgrSchedule');const schedule=ORDER_SCHEDULE[loc]||[];let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · Ordering Schedule</div>`;schedule.forEach(s=>{h+=`<div class="schedule-card" style="background:${s.bg};border:1px solid ${s.color};"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span style="font-size:28px;">${s.icon}</span><div><div style="font-weight:bold;font-size:15px;color:${s.color};">${s.label}</div><div style="font-size:12px;color:${s.color};">Applies to: ${s.cats.join(', ')}</div></div></div><div class="schedule-inner"><div style="font-size:13px;">📅 <strong>Order days:</strong> ${s.days}</div><div style="font-size:13px;margin-top:4px;">⏰ <strong>Cut-off:</strong> ${s.cutoff}</div></div></div>`;});h+=`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #e0d8c8;font-size:12px;color:#8a7a5a;line-height:1.7;"><strong style="color:#1a1410;">Reminder:</strong> Cut-offs are strict. Flag low stock before the cut-off — don't wait until it runs out.</div>`;el.innerHTML=h;}
 
-async function renderHistory(){const el=document.getElementById('mgrHistory');el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div style="color:#8a7a5a;font-size:14px;">Loading…</div>`;const history=await loadHistory();if(!history.length){el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div class="card" style="text-align:center;color:#8a7a5a;font-size:13px;font-style:italic;">No history yet. Saves automatically on daily reset.</div>`;return;}let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><button class="save-btn" onclick="downloadHistoryCSV()">📥 Download Full History CSV</button>`;history.forEach(entry=>{const d=new Date(entry.saved_at);const dateStr=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});const timeStr=d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});const items=Array.isArray(entry.items)?entry.items:[];h+=`<div class="history-card"><div class="history-date">📋 ${dateStr}</div><div class="history-meta">⏰ ${timeStr} · By: ${entry.staff_name||'Unknown'} · ${items.length} item${items.length!==1?'s':''}</div>`;if(items.length){items.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span>${i.item} <span style="font-size:10px;color:#8a7a5a;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.backups?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${i.backups}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}${i.qty?' · '+i.qty:''}</span></div></div>`;});}else h+=`<div style="font-size:12px;color:#8a7a5a;font-style:italic;">All stock was OK</div>`;h+='</div>';});el.innerHTML=h;}
-function downloadHistoryCSV(){const history=loadHistory();const rows=[['Date','Time','Staff','Location','Item','Category','Status','Qty','Backups','Notes']];history.forEach(entry=>{const d=new Date(entry.saved_at);const items=Array.isArray(entry.items)?entry.items:[];if(items.length)items.forEach(i=>rows.push([d.toLocaleDateString('en-AU'),d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}),entry.staff_name||'',loc,i.item,i.category,i.status.toUpperCase(),i.qty||'',i.backups||'',i.notes||'']));else rows.push([d.toLocaleDateString('en-AU'),d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}),entry.staff_name||'',loc,'(All OK)','','','','','']);});exportCSV(rows,'delisia-history-'+loc.replace(' ','-').toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.csv');}
+async function renderHistory(){
+  const el=document.getElementById('mgrHistory');
+  el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div style="color:#8a7a5a;font-size:14px;padding:16px;">Loading…</div>`;
+  const history=await loadHistory();
+  if(!history.length){el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div class="card" style="text-align:center;color:#8a7a5a;font-size:13px;font-style:italic;">No history yet.<br/>Saves automatically on daily reset.</div>`;return;}
+  let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><button class="save-btn" onclick="downloadHistoryCSV()">📥 Download Full History CSV</button>`;
+  history.forEach(entry=>{
+    const d=new Date(entry.saved_at);
+    const dateStr=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});
+    const timeStr=d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});
+    const items=Array.isArray(entry.items)?entry.items:[];
+    const priority=items.filter(i=>i.status==='low'||i.status==='out');
+    const rest=items.filter(i=>i.status!=='low'&&i.status!=='out');
+    h+=`<div class="history-card"><div class="history-date">📋 ${dateStr}</div><div class="history-meta">⏰ ${timeStr} · By: ${entry.staff_name||'Unknown'} · ${items.length} items</div>`;
+    if(priority.length){
+      h+=`<div style="background:#fff5f5;border-radius:8px;padding:10px;margin-bottom:10px;border:1px solid #e74c3c;"><div style="font-size:11px;font-weight:bold;color:#9b2226;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">🚨 Priority Order Items · ${priority.length}</div>`;
+      priority.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span style="font-weight:bold;">${i.item} <span style="font-size:10px;color:#8a7a5a;font-weight:normal;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.backups?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${i.backups}</span>`:''} ${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}</span></div></div>`;});
+      h+=`</div>`;
+    }else{h+=`<div style="font-size:12px;color:#2d6a4f;font-style:italic;margin-bottom:8px;">✅ No urgent items this day</div>`;}
+    if(rest.length){
+      h+=`<details><summary style="font-size:12px;color:#8a7a5a;cursor:pointer;padding:4px 0;">📋 Full snapshot (${rest.length} items) — tap to expand</summary><div style="margin-top:8px;">`;
+      let lastCat='';
+      rest.forEach(i=>{
+        if(i.category!==lastCat){h+=`<div style="font-size:10px;letter-spacing:1px;color:#8a7a5a;text-transform:uppercase;margin:8px 0 4px;">${ICONS[i.category]||''} ${i.category}</div>`;lastCat=i.category;}
+        const si=STATUS.find(s=>s.v===i.status);
+        h+=`<div class="history-item-row"><span>${i.item}${i.checkedBy?`<span style="font-size:9px;color:#8a7a5a;margin-left:4px;">· ${i.checkedBy}</span>`:''}</span><div style="display:flex;gap:4px;align-items:center;">${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''} ${si&&i.status!=='unchecked'?`<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si.bg};color:${si.c}">${i.status.toUpperCase()}</span>`:'<span style="font-size:10px;color:#c0b090;">—</span>'}</div></div>`;
+      });
+      h+=`</div></details>`;
+    }
+    h+=`</div>`;
+  });
+  el.innerHTML=h;
+}
+async function downloadHistoryCSV(){
+  const history=await loadHistory();
+  const rows=[['Date','Time','Staff','Location','Item','Category','Status','Qty','Backups','Notes','Priority']];
+  history.forEach(entry=>{
+    const d=new Date(entry.saved_at);
+    const items=Array.isArray(entry.items)?entry.items:[];
+    items.forEach(i=>rows.push([d.toLocaleDateString('en-AU'),d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}),entry.staff_name||'',loc,i.item,i.category,i.status.toUpperCase(),i.qty||'',i.backups||'',i.notes||'',(i.status==='low'||i.status==='out')?'YES':'']));
+  });
+  exportCSV(rows,'delisia-history-'+loc.replace(' ','-').toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.csv');
+}
 
 function renderRoles(){
   const el=document.getElementById('mgrRoles');const roles=S.customRoles||[];
