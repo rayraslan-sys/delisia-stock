@@ -553,8 +553,29 @@ document.getElementById('searchInput').addEventListener('input',e=>handleSearch(
 document.getElementById('catChecker').addEventListener('change',e=>setCatChecker(e.target.value));
 function handleSearch(v){search=v;const ct=document.getElementById('catTabs'),ra=document.getElementById('reminderArea');if(v){ct.classList.add('hidden');ra.classList.add('hidden');}else{ct.classList.remove('hidden');ra.classList.remove('hidden');}renderItems();}
 function setCatChecker(name){catCheckers[cat]=name;renderActiveStaff();renderTabs();renderFooter();}
+
+// ── MIDNIGHT AUTO SNAPSHOT ────────────────────────────────────────
+function scheduleMidnightSnapshot(){
+  const now=new Date();
+  const midnight=new Date(now);
+  midnight.setHours(24,0,0,0);// next midnight
+  const msUntilMidnight=midnight.getTime()-now.getTime();
+  setTimeout(async()=>{
+    // Only save if there is stock data worth saving
+    const hasData=allItems().some(i=>gs(i));
+    if(hasData){
+      await saveOrderToHistory();
+      console.log('Auto midnight snapshot saved');
+    }
+    // Schedule the next midnight snapshot
+    scheduleMidnightSnapshot();
+  },msUntilMidnight);
+}
+
 loadFromSupabase();
 setInterval(()=>loadFromSupabase(),30000);
+scheduleMidnightSnapshot();
+
 </script>
 </body>
 </html>
