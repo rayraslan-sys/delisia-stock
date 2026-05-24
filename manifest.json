@@ -9,10 +9,3 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "Delisia_Logo_-_Pistachio.png",
-      "sizes": "any",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
-}
