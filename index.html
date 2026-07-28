@@ -93,6 +93,9 @@ input,select{font-family:Georgia,serif;}
 .modal-box{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:380px;text-align:center;}
 .footer{padding:12px 20px;text-align:center;font-size:12px;color:#8a7a5a;border-top:1px solid #e0d8c8;background:#fff;}
 .hidden{display:none!important;}
+.lightbox-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;}
+.lightbox-overlay img{max-width:92vw;max-height:85vh;object-fit:contain;border-radius:10px;}
+.lightbox-close{position:absolute;top:16px;right:20px;color:#fff;font-size:32px;font-weight:bold;cursor:pointer;line-height:1;}
 
 /* iPad optimisations */
 @media (min-width:768px){
@@ -123,6 +126,11 @@ input,select{font-family:Georgia,serif;}
 </head>
 <body>
 <div class="app">
+
+<div id="photoLightbox" class="lightbox-overlay hidden" onclick="closePhotoLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <img id="lightboxImg" src="" onclick="event.stopPropagation()"/>
+</div>
 
 <div id="pinOverlay" class="pin-overlay hidden">
   <div class="pin-box">
@@ -209,6 +217,7 @@ input,select{font-family:Georgia,serif;}
 
 </div>
 <script>
+
 
 const PIN_MANAGER='1234',PIN_BOH='9999';
 const DEFAULT_STAFF={'Forest Lodge':['Diana','Huss','Ana','Guest','Jack','Joyce','Arya'],'Zetland':['Dharma','Ash','Martin','Jack','Joyce','Diana','Arya','Elvina','Krish']};
@@ -474,7 +483,15 @@ function handlePhotoUpload(input,item){
   reader.readAsDataURL(file);
 }
 function removePhoto(item){if(!S.stock[item])return;delete S.stock[item].photo;delete S.stock[item].photoAt;persist();renderItems();}
-function viewPhoto(item){const p=S.stock[item]&&S.stock[item].photo;if(p)window.open(p,'_blank');}
+function viewPhoto(item){const p=S.stock[item]&&S.stock[item].photo;if(p)openPhotoLightbox(p);}
+function openPhotoLightbox(src){
+  document.getElementById('lightboxImg').src=src;
+  document.getElementById('photoLightbox').classList.remove('hidden');
+}
+function closePhotoLightbox(){
+  document.getElementById('photoLightbox').classList.add('hidden');
+  document.getElementById('lightboxImg').src='';
+}
 
 function switchView(v){
   if(v==='manager'&&!isManager){pinTarget='manager';showPinOverlay('Manager Access','Full access to all management features.');return;}
@@ -521,7 +538,7 @@ function renderOverview(){
   const photoRows=PHOTO_ITEMS.map(item=>{
     const ph=(S.stock[item]&&S.stock[item].photo)||'';
     const at=(S.stock[item]&&S.stock[item].photoAt)?new Date(S.stock[item].photoAt).toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}):'';
-    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f5f0e8;">${ph?`<img src="${ph}" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #e0d8c8;cursor:pointer;" onclick="window.open(this.src,'_blank')"/>`:`<div style="height:56px;width:56px;border-radius:10px;background:#f5f0e8;display:flex;align-items:center;justify-content:center;font-size:22px;color:#c0b090;">📷</div>`}<div><div style="font-weight:bold;font-size:13px;">${item}</div><div style="font-size:11px;color:#8a7a5a;">${ph?'Uploaded today at '+at+' · tap to enlarge':'No photo uploaded yet today'}</div></div></div>`;
+    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f5f0e8;">${ph?`<img src="${ph}" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #e0d8c8;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:`<div style="height:56px;width:56px;border-radius:10px;background:#f5f0e8;display:flex;align-items:center;justify-content:center;font-size:22px;color:#c0b090;">📷</div>`}<div><div style="font-weight:bold;font-size:13px;">${item}</div><div style="font-size:11px;color:#8a7a5a;">${ph?'Uploaded today at '+at+' · tap to enlarge':'No photo uploaded yet today'}</div></div></div>`;
   }).join('');
   let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc}</div><div class="card"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:6px;">Active Staff</div><div style="font-size:13px;font-weight:bold;line-height:1.7;">${activeStaff}</div></div>${PHOTO_ITEMS.length?`<div class="card"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:6px;">📷 Coolroom Photos</div>${photoRows}</div>`:''}<button class="big-btn" style="background:${needs.length?'#9b2226':'#2d6a4f'};" onclick="toggleOrders()">${showOrders?'Hide':'🛒 View'} Order List · ${needs.length} item${needs.length!==1?'s':''} needed</button>`;
   if(showOrders){h+=`<div class="card" style="margin-bottom:14px;"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:10px;">Items To Order</div>`;if(!needs.length)h+='<div style="color:#2d6a4f;font-style:italic;">All stock levels OK ✓</div>';else needs.forEach(({k,item,status,qty,notes,backups})=>{const si=STATUS.find(s=>s.v===status);h+=`<div class="row"><div><div style="font-weight:bold;font-size:13px;">🚨 ${item}</div><div style="font-size:11px;color:#8a7a5a;">${k}${notes?' · '+notes:''}${backups?' · Backups: '+backups:''}</div></div><div style="display:flex;gap:5px;align-items:center;"><span style="padding:2px 7px;border-radius:8px;font-size:9px;font-weight:bold;letter-spacing:0.5px;background:#9b2226;color:#fff;">PRIORITY</span><span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:${si?si.bg:''};color:${si?si.c:''}">${status.toUpperCase()}${qty?' · '+qty:''}</span></div></div>`;});h+=`<button class="save-btn" style="margin-top:12px;" onclick="downloadOrderCSV()">📥 Download Order List CSV</button></div>`;}
@@ -557,7 +574,7 @@ async function renderHistory(){
     h+=`<div class="history-card"><div class="history-date">📋 ${dateStr}</div><div class="history-meta">⏰ ${timeStr} · By: ${entry.staff_name||'Unknown'} · ${items.length} items</div>`;
     if(priority.length){
       h+=`<div style="background:#fff5f5;border-radius:8px;padding:10px;margin-bottom:10px;border:1px solid #e74c3c;"><div style="font-size:11px;font-weight:bold;color:#9b2226;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">🚨 Priority Order Items · ${priority.length}</div>`;
-      priority.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span style="font-weight:bold;">${i.item} <span style="font-size:10px;color:#8a7a5a;font-weight:normal;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="window.open(this.src,'_blank')"/>`:''}${i.backups?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${i.backups}</span>`:''} ${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}</span></div></div>`;});
+      priority.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span style="font-weight:bold;">${i.item} <span style="font-size:10px;color:#8a7a5a;font-weight:normal;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:''}${i.backups?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${i.backups}</span>`:''} ${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}</span></div></div>`;});
       h+=`</div>`;
     }else{h+=`<div style="font-size:12px;color:#2d6a4f;font-style:italic;margin-bottom:8px;">✅ No urgent items this day</div>`;}
     if(rest.length){
@@ -566,7 +583,7 @@ async function renderHistory(){
       rest.forEach(i=>{
         if(i.category!==lastCat){h+=`<div style="font-size:10px;letter-spacing:1px;color:#8a7a5a;text-transform:uppercase;margin:8px 0 4px;">${ICONS[i.category]||''} ${i.category}</div>`;lastCat=i.category;}
         const si=STATUS.find(s=>s.v===i.status);
-        h+=`<div class="history-item-row"><span>${i.item}${i.checkedBy?`<span style="font-size:9px;color:#8a7a5a;margin-left:4px;">· ${i.checkedBy}</span>`:''}</span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="window.open(this.src,'_blank')"/>`:''}${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''} ${si&&i.status!=='unchecked'?`<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si.bg};color:${si.c}">${i.status.toUpperCase()}</span>`:'<span style="font-size:10px;color:#c0b090;">—</span>'}</div></div>`;
+        h+=`<div class="history-item-row"><span>${i.item}${i.checkedBy?`<span style="font-size:9px;color:#8a7a5a;margin-left:4px;">· ${i.checkedBy}</span>`:''}</span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:''}${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''} ${si&&i.status!=='unchecked'?`<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si.bg};color:${si.c}">${i.status.toUpperCase()}</span>`:'<span style="font-size:10px;color:#c0b090;">—</span>'}</div></div>`;
       });
       h+=`</div></details>`;
     }
@@ -644,6 +661,7 @@ setInterval(()=>{
   if(at!=='INPUT'&&at!=='TEXTAREA'&&at!=='SELECT')loadFromSupabase();
 },30000);
 scheduleAutoReset();
+
 
 
 </script>
