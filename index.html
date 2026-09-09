@@ -6,92 +6,92 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="Délisia Stock"/>
-<meta name="theme-color" content="#1a1410"/>
+<meta name="theme-color" content="#1a2e22"/>
 <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
 <link rel="manifest" href="manifest.json"/>
 <title>Délisia Stock Check</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:Georgia,serif;background:#f5f0e8;color:#1a1410;min-height:100vh;font-size:16px;}
+body{font-family:Georgia,serif;background:#f6f1e9;color:#1a2e22;min-height:100vh;font-size:16px;}
 button{font-family:Georgia,serif;cursor:pointer;}
 input,select{font-family:Georgia,serif;}
 .app{max-width:100%;margin:0 auto;}
-#header{background:#1a1410;color:#f5f0e8;padding:14px 20px;position:sticky;top:0;z-index:100;border-bottom:3px solid #c9a84c;}
+#header{background:#1a2e22;color:#f6f1e9;padding:14px 20px;position:sticky;top:0;z-index:100;border-bottom:3px solid #c8a55a;}
 .header-row{display:flex;justify-content:space-between;align-items:center;}
-.brand-sub{font-size:10px;letter-spacing:3px;color:#c9a84c;text-transform:uppercase;}
+.brand-sub{font-size:10px;letter-spacing:3px;color:#c8a55a;text-transform:uppercase;}
 .brand-title{font-size:20px;font-weight:bold;letter-spacing:1px;}
 .tab-btns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
-.tab-btn{padding:8px 14px;border-radius:20px;border:1px solid #c9a84c;font-size:13px;letter-spacing:0.5px;white-space:nowrap;}
-.tab-btn.active{background:#c9a84c;color:#1a1410;}
-.tab-btn.inactive{background:transparent;color:#c9a84c;}
-.progress-row{display:flex;justify-content:space-between;font-size:12px;color:#c9a84c;margin:10px 0 5px;}
-.progress-track{height:4px;background:#3a3020;border-radius:2px;}
-.progress-fill{height:4px;background:#c9a84c;border-radius:2px;transition:width 0.4s;}
-.loc-bar{display:flex;background:#2a1f18;border-bottom:2px solid #c9a84c;}
-.loc-btn{flex:1;padding:14px;border:none;background:transparent;color:#8a7a5a;font-size:15px;font-weight:bold;font-family:Georgia,serif;cursor:pointer;border-bottom:3px solid transparent;}
-.loc-btn.active{color:#c9a84c;border-bottom:3px solid #c9a84c;background:#1a1410;}
-.active-staff-bar{background:#2a1f18;padding:10px 20px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid #3a3020;min-height:42px;align-items:center;}
+.tab-btn{padding:8px 14px;border-radius:20px;border:1px solid #c8a55a;font-size:13px;letter-spacing:0.5px;white-space:nowrap;}
+.tab-btn.active{background:#c8a55a;color:#1a2e22;}
+.tab-btn.inactive{background:transparent;color:#c8a55a;}
+.progress-row{display:flex;justify-content:space-between;font-size:12px;color:#c8a55a;margin:10px 0 5px;}
+.progress-track{height:4px;background:#2f5040;border-radius:2px;}
+.progress-fill{height:4px;background:#c8a55a;border-radius:2px;transition:width 0.4s;}
+.loc-bar{display:flex;background:#253d31;border-bottom:2px solid #c8a55a;}
+.loc-btn{flex:1;padding:14px;border:none;background:transparent;color:#7d6f5e;font-size:15px;font-weight:bold;font-family:Georgia,serif;cursor:pointer;border-bottom:3px solid transparent;}
+.loc-btn.active{color:#c8a55a;border-bottom:3px solid #c8a55a;background:#1a2e22;}
+.active-staff-bar{background:#253d31;padding:10px 20px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid #2f5040;min-height:42px;align-items:center;}
 .active-staff-bar::-webkit-scrollbar{display:none;}
-.staff-chip{flex-shrink:0;display:flex;align-items:center;gap:6px;background:#3a3020;border-radius:20px;padding:6px 12px;}
-.staff-chip-name{font-size:13px;color:#f5f0e8;font-weight:bold;}
-.staff-chip-cat{font-size:11px;color:#c9a84c;}
-.active-staff-empty{font-size:13px;color:#4a3a2a;font-style:italic;}
+.staff-chip{flex-shrink:0;display:flex;align-items:center;gap:6px;background:#2f5040;border-radius:20px;padding:6px 12px;}
+.staff-chip-name{font-size:13px;color:#f6f1e9;font-weight:bold;}
+.staff-chip-cat{font-size:11px;color:#c8a55a;}
+.active-staff-empty{font-size:13px;color:#4a6a56;font-style:italic;}
 .checker-bar{background:#fffbe6;padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #e0d8c8;}
-.checker-bar label{font-size:14px;color:#8a7a5a;white-space:nowrap;flex-shrink:0;}
-.checker-select{flex:1;padding:10px 12px;border-radius:10px;border:1px solid #c9a84c;font-size:15px;background:#fff;font-family:Georgia,serif;cursor:pointer;}
+.checker-bar label{font-size:14px;color:#7d6f5e;white-space:nowrap;flex-shrink:0;}
+.checker-select{flex:1;padding:10px 12px;border-radius:10px;border:1px solid #c8a55a;font-size:15px;background:#fff;font-family:Georgia,serif;cursor:pointer;}
 .search-bar{padding:12px 20px;background:#fff;border-bottom:1px solid #e0d8c8;}
 .cat-tabs{display:flex;overflow-x:auto;padding:12px 20px;gap:10px;background:#fff;border-bottom:1px solid #e0d8c8;-webkit-overflow-scrolling:touch;}
 .cat-tabs::-webkit-scrollbar{display:none;}
 .cat-tab{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;white-space:nowrap;border:1px solid #e0d8c8;position:relative;}
-.cat-tab.active{border-color:#1a1410;background:#1a1410;color:#f5f0e8;}
-.cat-tab.inactive{background:#f5f0e8;color:#1a1410;}
+.cat-tab.active{border-color:#1a2e22;background:#1a2e22;color:#f6f1e9;}
+.cat-tab.inactive{background:#f6f1e9;color:#1a2e22;}
 .cat-tab.warn-tab{border-color:#b5631a!important;}
 .tab-badge{position:absolute;top:-6px;right:-6px;background:#9b2226;color:white;font-size:10px;font-weight:bold;border-radius:10px;padding:2px 6px;min-width:18px;text-align:center;line-height:16px;}
 .items-list{padding:12px 20px 100px;}
 .item-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;}
 .item-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
 .item-name{font-weight:bold;font-size:17px;}
-.item-par{font-size:13px;color:#8a7a5a;margin-top:3px;}
+.item-par{font-size:13px;color:#7d6f5e;margin-top:3px;}
 .status-badge{padding:4px 12px;border-radius:20px;font-size:13px;font-weight:bold;white-space:nowrap;flex-shrink:0;margin-left:8px;}
 .status-btns{display:flex;gap:6px;margin-bottom:10px;}
-.status-btn{flex:1;padding:12px 4px;border-radius:10px;font-size:12px;border:2px solid #e0d8c8;background:#f9f6f0;color:#8a7a5a;line-height:1.3;text-align:center;cursor:pointer;}
+.status-btn{flex:1;padding:12px 4px;border-radius:10px;font-size:12px;border:2px solid #e0d8c8;background:#f9f6f0;color:#7d6f5e;line-height:1.3;text-align:center;cursor:pointer;}
 .status-btn b{display:block;font-size:14px;}
 .status-btn small{display:block;font-size:10px;opacity:0.75;margin-top:2px;}
 .item-inputs{display:flex;gap:8px;margin-bottom:6px;}
 .item-input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid #e0d8c8;font-size:14px;background:#f9f6f0;width:0;}
-.checked-by{font-size:12px;color:#8a7a5a;font-style:italic;margin-top:6px;}
+.checked-by{font-size:12px;color:#7d6f5e;font-style:italic;margin-top:6px;}
 .search-input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid #ddd;font-size:15px;background:#f9f6f0;box-sizing:border-box;}
 .card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #e0d8c8;}
 .big-btn{width:100%;padding:16px;border-radius:12px;color:#fff;border:none;font-size:16px;font-weight:bold;margin-bottom:12px;font-family:Georgia,serif;cursor:pointer;}
-.save-btn{width:100%;padding:16px;border-radius:12px;background:#1a1410;color:#c9a84c;border:none;font-weight:bold;font-size:16px;font-family:Georgia,serif;margin-bottom:14px;cursor:pointer;}
-.warn-box{background:#fffbe6;border:1px solid #c9a84c;border-radius:12px;padding:14px;margin-bottom:14px;font-size:14px;line-height:1.6;}
-.dashed{border:2px dashed #c9a84c!important;}
-.field-label{font-size:13px;color:#8a7a5a;margin-bottom:5px;}
+.save-btn{width:100%;padding:16px;border-radius:12px;background:#1a2e22;color:#c8a55a;border:none;font-weight:bold;font-size:16px;font-family:Georgia,serif;margin-bottom:14px;cursor:pointer;}
+.warn-box{background:#fffbe6;border:1px solid #c8a55a;border-radius:12px;padding:14px;margin-bottom:14px;font-size:14px;line-height:1.6;}
+.dashed{border:2px dashed #c8a55a!important;}
+.field-label{font-size:13px;color:#7d6f5e;margin-bottom:5px;}
 .field{margin-bottom:10px;}
 .full-input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #e0d8c8;font-size:14px;background:#f9f6f0;box-sizing:border-box;font-family:Georgia,serif;}
-.par-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f5f0e8;}
+.par-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f6f1e9;}
 .par-input{width:64px;padding:8px 10px;border-radius:8px;font-size:14px;text-align:center;font-family:Georgia,serif;border:1.5px solid #e0d8c8;background:#f9f6f0;}
-.cat-label{font-size:11px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin:14px 0 8px;}
-.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f5f0e8;align-items:center;}
+.cat-label{font-size:11px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin:14px 0 8px;}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f6f1e9;align-items:center;}
 .tag{padding:3px 10px;border-radius:10px;font-size:11px;font-weight:bold;}
-.custom-tag{font-size:11px;color:#c9a84c;margin-left:6px;font-style:italic;}
+.custom-tag{font-size:11px;color:#c8a55a;margin-left:6px;font-style:italic;}
 .mgr-tabs{display:flex;background:#fff;border-bottom:1px solid #e0d8c8;overflow-x:auto;}
 .mgr-tabs::-webkit-scrollbar{display:none;}
-.mgr-tab{flex-shrink:0;padding:14px 16px;border:none;background:transparent;font-size:13px;font-family:Georgia,serif;border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer;color:#8a7a5a;}
+.mgr-tab{flex-shrink:0;padding:14px 16px;border:none;background:transparent;font-size:13px;font-family:Georgia,serif;border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer;color:#7d6f5e;}
 .schedule-card{border-radius:14px;padding:18px;margin-bottom:14px;}
 .schedule-inner{background:rgba(255,255,255,0.6);border-radius:10px;padding:12px 14px;}
 .rem-card{border-radius:12px;padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
 .reminder{padding:0 20px 6px;}
 .history-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #e0d8c8;}
-.history-date{font-weight:bold;font-size:14px;color:#1a1410;margin-bottom:4px;}
-.history-meta{font-size:12px;color:#8a7a5a;margin-bottom:10px;}
-.history-item-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #f5f0e8;}
+.history-date{font-weight:bold;font-size:14px;color:#1a2e22;margin-bottom:4px;}
+.history-meta{font-size:12px;color:#7d6f5e;margin-bottom:10px;}
+.history-item-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #f6f1e9;}
 .history-item-row:last-child{border-bottom:none;}
-.pin-overlay{position:fixed;inset:0;background:rgba(26,20,16,0.92);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;}
+.pin-overlay{position:fixed;inset:0;background:rgba(26,46,34,0.92);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;}
 .pin-box{background:#fff;border-radius:20px;padding:36px;width:100%;max-width:360px;text-align:center;border:1px solid #e0d8c8;}
-.modal-overlay{position:fixed;inset:0;background:rgba(26,20,16,0.85);display:flex;align-items:center;justify-content:center;z-index:800;padding:20px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(26,46,34,0.85);display:flex;align-items:center;justify-content:center;z-index:800;padding:20px;}
 .modal-box{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:380px;text-align:center;}
-.footer{padding:12px 20px;text-align:center;font-size:12px;color:#8a7a5a;border-top:1px solid #e0d8c8;background:#fff;}
+.footer{padding:12px 20px;text-align:center;font-size:12px;color:#7d6f5e;border-top:1px solid #e0d8c8;background:#fff;}
 .hidden{display:none!important;}
 .lightbox-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;}
 .lightbox-overlay img{max-width:92vw;max-height:85vh;object-fit:contain;border-radius:10px;}
@@ -136,12 +136,12 @@ input,select{font-family:Georgia,serif;}
   <div class="pin-box">
     <div style="font-size:36px;margin-bottom:8px;">🔒</div>
     <div style="font-weight:bold;font-size:18px;margin-bottom:4px;" id="pinTitle">Manager Access</div>
-    <div style="font-size:13px;color:#8a7a5a;margin-bottom:20px;" id="pinSubtitle">Enter your PIN to continue</div>
-    <input type="password" inputmode="numeric" maxlength="6" id="pinInput" placeholder="• • • •" style="width:100%;padding:12px;border-radius:8px;border:1.5px solid #c9a84c;font-size:22px;text-align:center;letter-spacing:8px;box-sizing:border-box;font-family:Georgia,serif;"/>
+    <div style="font-size:13px;color:#7d6f5e;margin-bottom:20px;" id="pinSubtitle">Enter your PIN to continue</div>
+    <input type="password" inputmode="numeric" maxlength="6" id="pinInput" placeholder="• • • •" style="width:100%;padding:12px;border-radius:8px;border:1.5px solid #c8a55a;font-size:22px;text-align:center;letter-spacing:8px;box-sizing:border-box;font-family:Georgia,serif;"/>
     <div id="pinErr" class="hidden" style="color:#9b2226;font-size:12px;margin-top:6px;">Incorrect PIN</div>
     <div style="display:flex;gap:10px;margin-top:16px;">
-      <button onclick="cancelPin()" style="flex:1;padding:12px;border-radius:8px;border:1px solid #e0d8c8;background:#f5f0e8;font-size:14px;">Cancel</button>
-      <button onclick="submitPin()" style="flex:1;padding:12px;border-radius:8px;border:none;background:#1a1410;color:#c9a84c;font-weight:bold;font-size:14px;">Enter</button>
+      <button onclick="cancelPin()" style="flex:1;padding:12px;border-radius:8px;border:1px solid #e0d8c8;background:#f6f1e9;font-size:14px;">Cancel</button>
+      <button onclick="submitPin()" style="flex:1;padding:12px;border-radius:8px;border:none;background:#1a2e22;color:#c8a55a;font-weight:bold;font-size:14px;">Enter</button>
     </div>
   </div>
 </div>
@@ -150,10 +150,10 @@ input,select{font-family:Georgia,serif;}
   <div class="modal-box">
     <div style="font-size:32px;margin-bottom:8px;">⚠️</div>
     <div style="font-weight:bold;font-size:16px;margin-bottom:8px;">Items Not Checked</div>
-    <div id="completionMsg" style="font-size:13px;color:#8a7a5a;margin-bottom:20px;line-height:1.5;"></div>
+    <div id="completionMsg" style="font-size:13px;color:#7d6f5e;margin-bottom:20px;line-height:1.5;"></div>
     <div style="display:flex;gap:10px;">
-      <button onclick="closeCompletionModal()" style="flex:1;padding:12px;border-radius:8px;border:1px solid #e0d8c8;background:#f5f0e8;font-size:13px;font-family:Georgia,serif;">Go Back</button>
-      <button onclick="confirmCatSwitch()" style="flex:1;padding:12px;border-radius:8px;border:none;background:#1a1410;color:#c9a84c;font-weight:bold;font-size:13px;font-family:Georgia,serif;">Continue Anyway</button>
+      <button onclick="closeCompletionModal()" style="flex:1;padding:12px;border-radius:8px;border:1px solid #e0d8c8;background:#f6f1e9;font-size:13px;font-family:Georgia,serif;">Go Back</button>
+      <button onclick="confirmCatSwitch()" style="flex:1;padding:12px;border-radius:8px;border:none;background:#1a2e22;color:#c8a55a;font-weight:bold;font-size:13px;font-family:Georgia,serif;">Continue Anyway</button>
     </div>
   </div>
 </div>
@@ -433,10 +433,10 @@ function buildCard(item,k){
   const ei=esc(item),ek=esc(k);
   const parHtml=parV!==''?`<div class="item-par">📊 Par: <strong>${parV}</strong></div>`:'';
   const statusList=isSimple?STATUS.filter(s=>s.v!=='ok'):STATUS;
-  const statusBtns=statusList.map(o=>`<button class="status-btn" style="border-color:${status===o.v?o.c:'#e0d8c8'};background:${status===o.v?o.bg:'#f9f6f0'};color:${status===o.v?o.c:'#8a7a5a'};font-weight:${status===o.v?'bold':'normal'};" onclick="setStatus('${ei}','${ek}','${o.v}')"><b>${o.l}</b><small>${o.sub}</small></button>`).join('');
-  const backupsHtml=isMeat?`<input type="text" placeholder="🔪 Backups / cut & ready (e.g. 3 portions prepped)..." value="${backups.replace(/"/g,'&quot;')}" class="item-input" style="width:100%;border-color:#c9a84c;" oninput="setField('${ei}','backups',this.value)"/>`:'';
+  const statusBtns=statusList.map(o=>`<button class="status-btn" style="border-color:${status===o.v?o.c:'#e0d8c8'};background:${status===o.v?o.bg:'#f9f6f0'};color:${status===o.v?o.c:'#7d6f5e'};font-weight:${status===o.v?'bold':'normal'};" onclick="setStatus('${ei}','${ek}','${o.v}')"><b>${o.l}</b><small>${o.sub}</small></button>`).join('');
+  const backupsHtml=isMeat?`<input type="text" placeholder="🔪 Backups / cut & ready (e.g. 3 portions prepped)..." value="${backups.replace(/"/g,'&quot;')}" class="item-input" style="width:100%;border-color:#c8a55a;" oninput="setField('${ei}','backups',this.value)"/>`:'';
   const checkedHtml=checkedBy?`<div class="checked-by">✓ Checked by ${checkedBy}</div>`:'';
-  const photoHtml=isPhotoItem?`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;"><label style="display:inline-block;padding:8px 12px;border-radius:8px;background:#1a1410;color:#c9a84c;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap;">📷 ${photo?'Retake':'Upload'} Photo<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoUpload(this,'${ei}')"/></label>${photo?`<img src="${photo}" style="height:48px;width:48px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #e0d8c8;" onclick="viewPhoto('${ei}')"/><button onclick="removePhoto('${ei}')" style="padding:6px 10px;border-radius:8px;border:1px solid #e0d8c8;background:#fff;font-size:11px;color:#9b2226;font-family:Georgia,serif;cursor:pointer;">Remove</button>`:'<span style="font-size:11px;color:#8a7a5a;font-style:italic;">for manager coolroom check</span>'}</div>`:'';
+  const photoHtml=isPhotoItem?`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;"><label style="display:inline-block;padding:8px 12px;border-radius:8px;background:#1a2e22;color:#c8a55a;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap;">📷 ${photo?'Retake':'Upload'} Photo<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoUpload(this,'${ei}')"/></label>${photo?`<img src="${photo}" style="height:48px;width:48px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid #e0d8c8;" onclick="viewPhoto('${ei}')"/><button onclick="removePhoto('${ei}')" style="padding:6px 10px;border-radius:8px;border:1px solid #e0d8c8;background:#fff;font-size:11px;color:#9b2226;font-family:Georgia,serif;cursor:pointer;">Remove</button>`:'<span style="font-size:11px;color:#7d6f5e;font-style:italic;">for manager coolroom check</span>'}</div>`:'';
   const fieldsHtml=isSimple
     ?`<input type="text" placeholder="Qty in stock (e.g. 3 bags) or 'OUT'..." value="${qty.replace(/"/g,'&quot;')}" class="item-input" style="width:100%;" oninput="setField('${ei}','qty',this.value)"/>`
     :`<input type="text" placeholder="Qty in stock (e.g. 2 full, 1 open)..." value="${qty.replace(/"/g,'&quot;')}" class="item-input" style="width:100%;" oninput="setField('${ei}','qty',this.value)"/><input type="text" placeholder="Notes (e.g. use first, check coolroom)..." value="${notes.replace(/"/g,'&quot;')}" class="item-input" style="width:100%;" oninput="setField('${ei}','notes',this.value)"/>${backupsHtml}`;
@@ -450,7 +450,7 @@ function setStatus(item,k,v){
     document.getElementById('catChecker').style.background='#fff5f5';
     document.getElementById('checkerPrompt').style.display='block';
     setTimeout(()=>{
-      document.getElementById('catChecker').style.border='1px solid #c9a84c';
+      document.getElementById('catChecker').style.border='1px solid #c8a55a';
       document.getElementById('catChecker').style.background='#fff';
       document.getElementById('checkerPrompt').style.display='none';
     },3000);
@@ -521,15 +521,15 @@ function submitPin(){
 function renderBOH(){
   const el=document.getElementById('bohContent');const c=cats();
   const needs=Object.entries(c).flatMap(([k,items])=>items.filter(i=>gs(i)==='low'||gs(i)==='out').map(i=>({k,item:i,status:gs(i),qty:gq(i),notes:gn(i),backups:gb(i)})));
-  let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · Overview Summary</div><div class="card"><div style="font-size:13px;font-weight:bold;margin-bottom:10px;">🛒 Items Needing Attention · ${needs.length}</div>`;
+  let h=`<div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · Overview Summary</div><div class="card"><div style="font-size:13px;font-weight:bold;margin-bottom:10px;">🛒 Items Needing Attention · ${needs.length}</div>`;
   if(!needs.length)h+='<div style="color:#2d6a4f;font-style:italic;font-size:13px;">All stock levels OK ✓</div>';
-  else needs.forEach(({k,item,status,qty,notes,backups})=>{const si=STATUS.find(s=>s.v===status);h+=`<div class="row"><div><div style="font-weight:bold;font-size:13px;">🚨 ${item}</div><div style="font-size:11px;color:#8a7a5a;">${k}${notes?' · '+notes:''}${backups?' · Backups: '+backups:''}</div></div><div style="display:flex;gap:5px;align-items:center;"><span style="padding:2px 7px;border-radius:8px;font-size:9px;font-weight:bold;letter-spacing:0.5px;background:#9b2226;color:#fff;">PRIORITY</span><span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${status.toUpperCase()}${qty?' · '+qty:''}</span></div></div>`;});
+  else needs.forEach(({k,item,status,qty,notes,backups})=>{const si=STATUS.find(s=>s.v===status);h+=`<div class="row"><div><div style="font-weight:bold;font-size:13px;">🚨 ${item}</div><div style="font-size:11px;color:#7d6f5e;">${k}${notes?' · '+notes:''}${backups?' · Backups: '+backups:''}</div></div><div style="display:flex;gap:5px;align-items:center;"><span style="padding:2px 7px;border-radius:8px;font-size:9px;font-weight:bold;letter-spacing:0.5px;background:#9b2226;color:#fff;">PRIORITY</span><span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${status.toUpperCase()}${qty?' · '+qty:''}</span></div></div>`;});
   h+='</div>';
-  Object.entries(c).forEach(([k,items])=>{const checked=items.filter(i=>gs(i)).length;h+=`<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-weight:bold;font-size:13px;">${ICONS[k]||''} ${k}</div><div style="font-size:11px;color:#8a7a5a;">${checked}/${items.length}</div></div>`;items.forEach(item=>{const s=gs(item),q=gq(item),n=gn(item),cb=gcb(item),bk=gb(item),ph=(S.stock[item]&&S.stock[item].photo)||'';const si=STATUS.find(o=>o.v===s);h+=`<div class="row" style="align-items:flex-start;"><div style="flex:1;"><span style="font-size:13px;">${item}</span>${cb?`<span style="font-size:10px;color:#8a7a5a;margin-left:6px;">· ${cb}</span>`:''}${n?`<div style="font-size:11px;color:#8a7a5a;font-style:italic;margin-top:2px;">📝 ${n}</div>`:''}</div><div style="display:flex;gap:6px;align-items:center;">${ph?`<img src="${ph}" style="height:26px;width:26px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="viewPhoto('${esc(item)}')"/>`:''}${bk?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${bk}</span>`:''}${q?`<span style="font-size:11px;color:#8a7a5a;">${q}</span>`:''} ${si?`<span class="tag" style="background:${si.bg};color:${si.c};">${si.l}</span>`:'<span style="font-size:11px;color:#c0b090;">—</span>'}</div></div>`;});h+='</div>';});
+  Object.entries(c).forEach(([k,items])=>{const checked=items.filter(i=>gs(i)).length;h+=`<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-weight:bold;font-size:13px;">${ICONS[k]||''} ${k}</div><div style="font-size:11px;color:#7d6f5e;">${checked}/${items.length}</div></div>`;items.forEach(item=>{const s=gs(item),q=gq(item),n=gn(item),cb=gcb(item),bk=gb(item),ph=(S.stock[item]&&S.stock[item].photo)||'';const si=STATUS.find(o=>o.v===s);h+=`<div class="row" style="align-items:flex-start;"><div style="flex:1;"><span style="font-size:13px;">${item}</span>${cb?`<span style="font-size:10px;color:#7d6f5e;margin-left:6px;">· ${cb}</span>`:''}${n?`<div style="font-size:11px;color:#7d6f5e;font-style:italic;margin-top:2px;">📝 ${n}</div>`:''}</div><div style="display:flex;gap:6px;align-items:center;">${ph?`<img src="${ph}" style="height:26px;width:26px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="viewPhoto('${esc(item)}')"/>`:''}${bk?`<span style="font-size:10px;color:#7d6f5e;">Bkp:${bk}</span>`:''}${q?`<span style="font-size:11px;color:#7d6f5e;">${q}</span>`:''} ${si?`<span class="tag" style="background:${si.bg};color:${si.c};">${si.l}</span>`:'<span style="font-size:11px;color:#c0b090;">—</span>'}</div></div>`;});h+='</div>';});
   el.innerHTML=h;
 }
 
-function setMgrTab(n){mgrTab=n;[0,1,2,3,4].forEach(i=>{const t=document.getElementById('mTab'+i);if(!t)return;t.style.borderBottom=i===n?'3px solid #c9a84c':'3px solid transparent';t.style.fontWeight=i===n?'bold':'normal';t.style.color=i===n?'#1a1410':'#8a7a5a';});['mgrOverview','mgrPar','mgrSchedule','mgrHistory','mgrRoles'].forEach((id,i)=>document.getElementById(id).classList.toggle('hidden',i!==n));if(n===0)renderOverview();if(n===1)renderPar();if(n===2)renderSched();if(n===3)renderHistory();if(n===4)renderRoles();}
+function setMgrTab(n){mgrTab=n;[0,1,2,3,4].forEach(i=>{const t=document.getElementById('mTab'+i);if(!t)return;t.style.borderBottom=i===n?'3px solid #c8a55a':'3px solid transparent';t.style.fontWeight=i===n?'bold':'normal';t.style.color=i===n?'#1a2e22':'#7d6f5e';});['mgrOverview','mgrPar','mgrSchedule','mgrHistory','mgrRoles'].forEach((id,i)=>document.getElementById(id).classList.toggle('hidden',i!==n));if(n===0)renderOverview();if(n===1)renderPar();if(n===2)renderSched();if(n===3)renderHistory();if(n===4)renderRoles();}
 
 function renderOverview(){
   const c=cats(),el=document.getElementById('mgrOverview');
@@ -538,12 +538,12 @@ function renderOverview(){
   const photoRows=PHOTO_ITEMS.map(item=>{
     const ph=(S.stock[item]&&S.stock[item].photo)||'';
     const at=(S.stock[item]&&S.stock[item].photoAt)?new Date(S.stock[item].photoAt).toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}):'';
-    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f5f0e8;">${ph?`<img src="${ph}" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #e0d8c8;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:`<div style="height:56px;width:56px;border-radius:10px;background:#f5f0e8;display:flex;align-items:center;justify-content:center;font-size:22px;color:#c0b090;">📷</div>`}<div><div style="font-weight:bold;font-size:13px;">${item}</div><div style="font-size:11px;color:#8a7a5a;">${ph?'Uploaded today at '+at+' · tap to enlarge':'No photo uploaded yet today'}</div></div></div>`;
+    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f6f1e9;">${ph?`<img src="${ph}" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #e0d8c8;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:`<div style="height:56px;width:56px;border-radius:10px;background:#f6f1e9;display:flex;align-items:center;justify-content:center;font-size:22px;color:#c0b090;">📷</div>`}<div><div style="font-weight:bold;font-size:13px;">${item}</div><div style="font-size:11px;color:#7d6f5e;">${ph?'Uploaded today at '+at+' · tap to enlarge':'No photo uploaded yet today'}</div></div></div>`;
   }).join('');
-  let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc}</div><div class="card"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:6px;">Active Staff</div><div style="font-size:13px;font-weight:bold;line-height:1.7;">${activeStaff}</div></div>${PHOTO_ITEMS.length?`<div class="card"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:6px;">📷 Coolroom Photos</div>${photoRows}</div>`:''}<button class="big-btn" style="background:${needs.length?'#9b2226':'#2d6a4f'};" onclick="toggleOrders()">${showOrders?'Hide':'🛒 View'} Order List · ${needs.length} item${needs.length!==1?'s':''} needed</button>`;
-  if(showOrders){h+=`<div class="card" style="margin-bottom:14px;"><div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:10px;">Items To Order</div>`;if(!needs.length)h+='<div style="color:#2d6a4f;font-style:italic;">All stock levels OK ✓</div>';else needs.forEach(({k,item,status,qty,notes,backups})=>{const si=STATUS.find(s=>s.v===status);h+=`<div class="row"><div><div style="font-weight:bold;font-size:13px;">🚨 ${item}</div><div style="font-size:11px;color:#8a7a5a;">${k}${notes?' · '+notes:''}${backups?' · Backups: '+backups:''}</div></div><div style="display:flex;gap:5px;align-items:center;"><span style="padding:2px 7px;border-radius:8px;font-size:9px;font-weight:bold;letter-spacing:0.5px;background:#9b2226;color:#fff;">PRIORITY</span><span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:${si?si.bg:''};color:${si?si.c:''}">${status.toUpperCase()}${qty?' · '+qty:''}</span></div></div>`;});h+=`<button class="save-btn" style="margin-top:12px;" onclick="downloadOrderCSV()">📥 Download Order List CSV</button></div>`;}
+  let h=`<div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:12px;">📍 ${loc}</div><div class="card"><div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:6px;">Active Staff</div><div style="font-size:13px;font-weight:bold;line-height:1.7;">${activeStaff}</div></div>${PHOTO_ITEMS.length?`<div class="card"><div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:6px;">📷 Coolroom Photos</div>${photoRows}</div>`:''}<button class="big-btn" style="background:${needs.length?'#9b2226':'#2d6a4f'};" onclick="toggleOrders()">${showOrders?'Hide':'🛒 View'} Order List · ${needs.length} item${needs.length!==1?'s':''} needed</button>`;
+  if(showOrders){h+=`<div class="card" style="margin-bottom:14px;"><div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:10px;">Items To Order</div>`;if(!needs.length)h+='<div style="color:#2d6a4f;font-style:italic;">All stock levels OK ✓</div>';else needs.forEach(({k,item,status,qty,notes,backups})=>{const si=STATUS.find(s=>s.v===status);h+=`<div class="row"><div><div style="font-weight:bold;font-size:13px;">🚨 ${item}</div><div style="font-size:11px;color:#7d6f5e;">${k}${notes?' · '+notes:''}${backups?' · Backups: '+backups:''}</div></div><div style="display:flex;gap:5px;align-items:center;"><span style="padding:2px 7px;border-radius:8px;font-size:9px;font-weight:bold;letter-spacing:0.5px;background:#9b2226;color:#fff;">PRIORITY</span><span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:${si?si.bg:''};color:${si?si.c:''}">${status.toUpperCase()}${qty?' · '+qty:''}</span></div></div>`;});h+=`<button class="save-btn" style="margin-top:12px;" onclick="downloadOrderCSV()">📥 Download Order List CSV</button></div>`;}
   h+=`<button class="big-btn" style="background:#9b2226;" onclick="confirmReset()">🔄 Reset All Stock (New Day)</button>`;
-  Object.entries(c).forEach(([k,items])=>{const checked=items.filter(i=>gs(i)).length;h+=`<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-weight:bold;font-size:13px;">${ICONS[k]||''} ${k}</div><div style="font-size:11px;color:#8a7a5a;">${checked}/${items.length}</div></div>`;items.forEach(item=>{const s=gs(item),q=gq(item),n=gn(item),cb=gcb(item),bk=gb(item),ph=(S.stock[item]&&S.stock[item].photo)||'';const si=STATUS.find(o=>o.v===s);h+=`<div class="row" style="align-items:flex-start;"><div style="flex:1;"><span style="font-size:13px;">${item}</span>${cb?`<span style="font-size:10px;color:#8a7a5a;margin-left:4px;">· ${cb}</span>`:''}${n?`<div style="font-size:11px;color:#8a7a5a;font-style:italic;margin-top:2px;">📝 ${n}</div>`:''}</div><div style="display:flex;gap:5px;align-items:center;">${ph?`<img src="${ph}" style="height:26px;width:26px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="viewPhoto('${esc(item)}')"/>`:''}${bk?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${bk}</span>`:''}${q?`<span style="font-size:11px;color:#8a7a5a;">${q}</span>`:''} ${si?`<span class="tag" style="background:${si.bg};color:${si.c};">${si.l}</span>`:'<span style="font-size:11px;color:#c0b090;">—</span>'}</div></div>`;});h+='</div>';});
+  Object.entries(c).forEach(([k,items])=>{const checked=items.filter(i=>gs(i)).length;h+=`<div class="card" style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-weight:bold;font-size:13px;">${ICONS[k]||''} ${k}</div><div style="font-size:11px;color:#7d6f5e;">${checked}/${items.length}</div></div>`;items.forEach(item=>{const s=gs(item),q=gq(item),n=gn(item),cb=gcb(item),bk=gb(item),ph=(S.stock[item]&&S.stock[item].photo)||'';const si=STATUS.find(o=>o.v===s);h+=`<div class="row" style="align-items:flex-start;"><div style="flex:1;"><span style="font-size:13px;">${item}</span>${cb?`<span style="font-size:10px;color:#7d6f5e;margin-left:4px;">· ${cb}</span>`:''}${n?`<div style="font-size:11px;color:#7d6f5e;font-style:italic;margin-top:2px;">📝 ${n}</div>`:''}</div><div style="display:flex;gap:5px;align-items:center;">${ph?`<img src="${ph}" style="height:26px;width:26px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="viewPhoto('${esc(item)}')"/>`:''}${bk?`<span style="font-size:10px;color:#7d6f5e;">Bkp:${bk}</span>`:''}${q?`<span style="font-size:11px;color:#7d6f5e;">${q}</span>`:''} ${si?`<span class="tag" style="background:${si.bg};color:${si.c};">${si.l}</span>`:'<span style="font-size:11px;color:#c0b090;">—</span>'}</div></div>`;});h+='</div>';});
   el.innerHTML=h;
 }
 function toggleOrders(){showOrders=!showOrders;renderOverview();}
@@ -551,19 +551,19 @@ function downloadOrderCSV(){const c=cats();const rows=[['Date','Location','Item'
 function exportCSV(rows,filename){const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
 function confirmReset(){if(confirm('Reset ALL stock for a new day?\n\nOrder list will be saved to history first.')){saveOrderToHistory().then(()=>{S.stock={};catCheckers={};persist();renderAll();renderOverview();});}}
 
-function renderPar(){const c=cats(),el=document.getElementById('mgrPar');let h=`<div class="warn-box">🔐 <strong>Manager only.</strong> Set par levels and add custom items.</div><div class="card dashed" style="margin-bottom:14px;"><div style="font-weight:bold;font-size:13px;margin-bottom:12px;">➕ Add New Item</div><div class="field"><div class="field-label">Category</div><select id="niCat" class="full-input">${Object.keys(c).map(k=>`<option value="${k}">${ICONS[k]||''} ${k}</option>`).join('')}</select></div><div class="field"><div class="field-label">Item Name</div><input type="text" id="niName" placeholder="e.g. Truffle Honey" class="full-input" style="border:1px solid #e0d8c8;"/></div><div style="margin-bottom:12px;"><div class="field-label">Par Level (optional)</div><input type="text" inputmode="decimal" id="niPar" placeholder="e.g. 2" class="full-input" style="border:1px solid #e0d8c8;"/></div><button onclick="addItem()" style="width:100%;padding:12px;border-radius:8px;background:#1a1410;color:#c9a84c;border:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;cursor:pointer;">➕ Add Item</button><div id="addMsg" style="margin-top:8px;font-size:12px;text-align:center;font-weight:bold;"></div></div>`;if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()">💾 Save Par Changes (${Object.keys(epChanges).length} edited)</button>`;Object.entries(c).forEach(([k,items])=>{h+=`<div class="card" style="margin-bottom:10px;"><div style="font-weight:bold;font-size:13px;margin-bottom:10px;">${ICONS[k]||''} ${k}</div>`;items.forEach(item=>{const isC=S.customItems[k]&&S.customItems[k].includes(item);const pv=gp(item);const changed=epChanges[item]!==undefined;const ei=esc(item);h+=`<div class="par-row"><div style="flex:1;font-size:13px;">${item}${isC?'<span class="custom-tag">custom</span>':''}</div><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:#8a7a5a;">Par:</span><input type="text" inputmode="decimal" value="${pv}" placeholder="—" class="par-input" style="border:1.5px solid ${changed?'#c9a84c':'#e0d8c8'};background:${changed?'#fffbe6':'#f9f6f0'};" onchange="ep('${ei}',this.value)"/></div></div>`;});h+='</div>';});if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()" style="margin-bottom:24px;">💾 Save Par Changes</button>`;el.innerHTML=h;}
+function renderPar(){const c=cats(),el=document.getElementById('mgrPar');let h=`<div class="warn-box">🔐 <strong>Manager only.</strong> Set par levels and add custom items.</div><div class="card dashed" style="margin-bottom:14px;"><div style="font-weight:bold;font-size:13px;margin-bottom:12px;">➕ Add New Item</div><div class="field"><div class="field-label">Category</div><select id="niCat" class="full-input">${Object.keys(c).map(k=>`<option value="${k}">${ICONS[k]||''} ${k}</option>`).join('')}</select></div><div class="field"><div class="field-label">Item Name</div><input type="text" id="niName" placeholder="e.g. Truffle Honey" class="full-input" style="border:1px solid #e0d8c8;"/></div><div style="margin-bottom:12px;"><div class="field-label">Par Level (optional)</div><input type="text" inputmode="decimal" id="niPar" placeholder="e.g. 2" class="full-input" style="border:1px solid #e0d8c8;"/></div><button onclick="addItem()" style="width:100%;padding:12px;border-radius:8px;background:#1a2e22;color:#c8a55a;border:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;cursor:pointer;">➕ Add Item</button><div id="addMsg" style="margin-top:8px;font-size:12px;text-align:center;font-weight:bold;"></div></div>`;if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()">💾 Save Par Changes (${Object.keys(epChanges).length} edited)</button>`;Object.entries(c).forEach(([k,items])=>{h+=`<div class="card" style="margin-bottom:10px;"><div style="font-weight:bold;font-size:13px;margin-bottom:10px;">${ICONS[k]||''} ${k}</div>`;items.forEach(item=>{const isC=S.customItems[k]&&S.customItems[k].includes(item);const pv=gp(item);const changed=epChanges[item]!==undefined;const ei=esc(item);h+=`<div class="par-row"><div style="flex:1;font-size:13px;">${item}${isC?'<span class="custom-tag">custom</span>':''}</div><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;color:#7d6f5e;">Par:</span><input type="text" inputmode="decimal" value="${pv}" placeholder="—" class="par-input" style="border:1.5px solid ${changed?'#c8a55a':'#e0d8c8'};background:${changed?'#fffbe6':'#f9f6f0'};" onchange="ep('${ei}',this.value)"/></div></div>`;});h+='</div>';});if(Object.keys(epChanges).length)h+=`<button class="save-btn" onclick="savePar()" style="margin-bottom:24px;">💾 Save Par Changes</button>`;el.innerHTML=h;}
 function ep(item,v){epChanges[item]=v;renderPar();}
 function savePar(){Object.assign(S.par,epChanges);epChanges={};persist();renderPar();renderItems();}
 function addItem(){const name=document.getElementById('niName').value.trim();const k=document.getElementById('niCat').value;const pv=document.getElementById('niPar').value.trim();const msg=document.getElementById('addMsg');if(!name){msg.textContent='Please enter a name.';msg.style.color='#9b2226';return;}if(Object.values(cats()).flat().map(i=>i.toLowerCase()).includes(name.toLowerCase())){msg.textContent='Already exists.';msg.style.color='#9b2226';return;}if(!S.customItems[k])S.customItems[k]=[];S.customItems[k].push(name);if(pv)S.par[name]=pv;persist();msg.textContent='✓ "'+name+'" added.';msg.style.color='#2d6a4f';document.getElementById('niName').value='';document.getElementById('niPar').value='';setTimeout(()=>{msg.textContent='';},3000);renderPar();renderTabs();renderItems();}
 
-function renderSched(){const el=document.getElementById('mgrSchedule');const schedule=ORDER_SCHEDULE[loc]||[];let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · Ordering Schedule</div>`;schedule.forEach(s=>{h+=`<div class="schedule-card" style="background:${s.bg};border:1px solid ${s.color};"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span style="font-size:28px;">${s.icon}</span><div><div style="font-weight:bold;font-size:15px;color:${s.color};">${s.label}</div><div style="font-size:12px;color:${s.color};">Applies to: ${s.cats.join(', ')}</div></div></div><div class="schedule-inner"><div style="font-size:13px;">📅 <strong>Order days:</strong> ${s.days}</div><div style="font-size:13px;margin-top:4px;">⏰ <strong>Cut-off:</strong> ${s.cutoff}</div></div></div>`;});h+=`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #e0d8c8;font-size:12px;color:#8a7a5a;line-height:1.7;"><strong style="color:#1a1410;">Reminder:</strong> Cut-offs are strict. Flag low stock before the cut-off — don't wait until it runs out.</div>`;el.innerHTML=h;}
+function renderSched(){const el=document.getElementById('mgrSchedule');const schedule=ORDER_SCHEDULE[loc]||[];let h=`<div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · Ordering Schedule</div>`;schedule.forEach(s=>{h+=`<div class="schedule-card" style="background:${s.bg};border:1px solid ${s.color};"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span style="font-size:28px;">${s.icon}</span><div><div style="font-weight:bold;font-size:15px;color:${s.color};">${s.label}</div><div style="font-size:12px;color:${s.color};">Applies to: ${s.cats.join(', ')}</div></div></div><div class="schedule-inner"><div style="font-size:13px;">📅 <strong>Order days:</strong> ${s.days}</div><div style="font-size:13px;margin-top:4px;">⏰ <strong>Cut-off:</strong> ${s.cutoff}</div></div></div>`;});h+=`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #e0d8c8;font-size:12px;color:#7d6f5e;line-height:1.7;"><strong style="color:#1a2e22;">Reminder:</strong> Cut-offs are strict. Flag low stock before the cut-off — don't wait until it runs out.</div>`;el.innerHTML=h;}
 
 async function renderHistory(){
   const el=document.getElementById('mgrHistory');
-  el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div style="color:#8a7a5a;font-size:14px;padding:16px;">Loading…</div>`;
+  el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div style="color:#7d6f5e;font-size:14px;padding:16px;">Loading…</div>`;
   const history=await loadHistory();
-  if(!history.length){el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div class="card" style="text-align:center;color:#8a7a5a;font-size:13px;font-style:italic;">No history yet.<br/>Saves automatically on daily reset.</div>`;return;}
-  let h=`<div style="font-size:10px;letter-spacing:2px;color:#8a7a5a;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><button class="save-btn" onclick="downloadHistoryCSV()">📥 Download Full History CSV</button>`;
+  if(!history.length){el.innerHTML=`<div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><div class="card" style="text-align:center;color:#7d6f5e;font-size:13px;font-style:italic;">No history yet.<br/>Saves automatically on daily reset.</div>`;return;}
+  let h=`<div style="font-size:10px;letter-spacing:2px;color:#7d6f5e;text-transform:uppercase;margin-bottom:12px;">📍 ${loc} · 7-Day Archive</div><button class="save-btn" onclick="downloadHistoryCSV()">📥 Download Full History CSV</button>`;
   history.forEach(entry=>{
     const d=new Date(entry.saved_at);
     const dateStr=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'});
@@ -574,16 +574,16 @@ async function renderHistory(){
     h+=`<div class="history-card"><div class="history-date">📋 ${dateStr}</div><div class="history-meta">⏰ ${timeStr} · By: ${entry.staff_name||'Unknown'} · ${items.length} items</div>`;
     if(priority.length){
       h+=`<div style="background:#fff5f5;border-radius:8px;padding:10px;margin-bottom:10px;border:1px solid #e74c3c;"><div style="font-size:11px;font-weight:bold;color:#9b2226;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">🚨 Priority Order Items · ${priority.length}</div>`;
-      priority.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span style="font-weight:bold;">${i.item} <span style="font-size:10px;color:#8a7a5a;font-weight:normal;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:''}${i.backups?`<span style="font-size:10px;color:#8a7a5a;">Bkp:${i.backups}</span>`:''} ${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}</span></div></div>`;});
+      priority.forEach(i=>{const si=STATUS.find(s=>s.v===i.status);h+=`<div class="history-item-row"><span style="font-weight:bold;">${i.item} <span style="font-size:10px;color:#7d6f5e;font-weight:normal;">${i.category}</span></span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:''}${i.backups?`<span style="font-size:10px;color:#7d6f5e;">Bkp:${i.backups}</span>`:''} ${i.qty?`<span style="font-size:10px;color:#7d6f5e;">${i.qty}</span>`:''}<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si?si.bg:'#eee'};color:${si?si.c:'#666'}">${i.status.toUpperCase()}</span></div></div>`;});
       h+=`</div>`;
     }else{h+=`<div style="font-size:12px;color:#2d6a4f;font-style:italic;margin-bottom:8px;">✅ No urgent items this day</div>`;}
     if(rest.length){
-      h+=`<details><summary style="font-size:12px;color:#8a7a5a;cursor:pointer;padding:4px 0;">📋 Full snapshot (${rest.length} items) — tap to expand</summary><div style="margin-top:8px;">`;
+      h+=`<details><summary style="font-size:12px;color:#7d6f5e;cursor:pointer;padding:4px 0;">📋 Full snapshot (${rest.length} items) — tap to expand</summary><div style="margin-top:8px;">`;
       let lastCat='';
       rest.forEach(i=>{
-        if(i.category!==lastCat){h+=`<div style="font-size:10px;letter-spacing:1px;color:#8a7a5a;text-transform:uppercase;margin:8px 0 4px;">${ICONS[i.category]||''} ${i.category}</div>`;lastCat=i.category;}
+        if(i.category!==lastCat){h+=`<div style="font-size:10px;letter-spacing:1px;color:#7d6f5e;text-transform:uppercase;margin:8px 0 4px;">${ICONS[i.category]||''} ${i.category}</div>`;lastCat=i.category;}
         const si=STATUS.find(s=>s.v===i.status);
-        h+=`<div class="history-item-row"><span>${i.item}${i.checkedBy?`<span style="font-size:9px;color:#8a7a5a;margin-left:4px;">· ${i.checkedBy}</span>`:''}</span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:''}${i.qty?`<span style="font-size:10px;color:#8a7a5a;">${i.qty}</span>`:''} ${si&&i.status!=='unchecked'?`<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si.bg};color:${si.c}">${i.status.toUpperCase()}</span>`:'<span style="font-size:10px;color:#c0b090;">—</span>'}</div></div>`;
+        h+=`<div class="history-item-row"><span>${i.item}${i.checkedBy?`<span style="font-size:9px;color:#7d6f5e;margin-left:4px;">· ${i.checkedBy}</span>`:''}</span><div style="display:flex;gap:4px;align-items:center;">${i.photo?`<img src="${i.photo}" style="height:24px;width:24px;object-fit:cover;border-radius:6px;cursor:pointer;" onclick="openPhotoLightbox(this.src)"/>`:''}${i.qty?`<span style="font-size:10px;color:#7d6f5e;">${i.qty}</span>`:''} ${si&&i.status!=='unchecked'?`<span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;background:${si.bg};color:${si.c}">${i.status.toUpperCase()}</span>`:'<span style="font-size:10px;color:#c0b090;">—</span>'}</div></div>`;
       });
       h+=`</div></details>`;
     }
@@ -608,11 +608,11 @@ function renderRoles(){
   let h=`<div class="warn-box">🔐 <strong>Manager only.</strong> Manage staff names and supervisor PINs for ${loc}.</div>`;
   h+=`<div class="card" style="margin-bottom:14px;"><div style="font-weight:bold;font-size:13px;margin-bottom:12px;">👤 Staff Names — ${loc}</div>`;
   allStaff.forEach(name=>{const isDefault=(DEFAULT_STAFF[loc]||[]).includes(name);h+=`<div class="par-row"><span style="font-size:13px;">${name}${isDefault?'<span class="custom-tag">default</span>':''}</span>${!isDefault?`<button onclick="removeStaff('${esc(name)}')" style="padding:4px 10px;border-radius:8px;border:1px solid #e0d8c8;background:#fff;font-size:12px;color:#9b2226;font-family:Georgia,serif;cursor:pointer;">Remove</button>`:'<span style="font-size:11px;color:#c0b090;">built-in</span>'}</div>`;});
-  h+=`<div style="display:flex;gap:8px;margin-top:12px;"><input type="text" id="newStaffName" placeholder="Add staff name..." class="full-input" style="border:1px solid #e0d8c8;"/><button onclick="addStaff()" style="padding:10px 14px;border-radius:8px;background:#1a1410;color:#c9a84c;border:none;font-weight:bold;font-family:Georgia,serif;cursor:pointer;white-space:nowrap;">➕ Add</button></div><div id="staffMsg" style="margin-top:6px;font-size:12px;font-weight:bold;"></div></div>`;
-  h+=`<div class="card dashed" style="margin-bottom:14px;"><div style="font-weight:bold;font-size:13px;margin-bottom:12px;">➕ Add Supervisor Role</div><div class="field"><div class="field-label">Name</div><input type="text" id="roleName" placeholder="e.g. Head Chef" class="full-input" style="border:1px solid #e0d8c8;"/></div><div class="field"><div class="field-label">PIN (4–6 digits)</div><input type="text" inputmode="numeric" id="rolePin" placeholder="e.g. 5678" class="full-input" style="border:1px solid #e0d8c8;" maxlength="6"/></div><button onclick="addRole()" style="width:100%;padding:12px;border-radius:8px;background:#1a1410;color:#c9a84c;border:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;cursor:pointer;margin-top:4px;">➕ Add Role</button><div id="roleMsg" style="margin-top:8px;font-size:12px;text-align:center;font-weight:bold;"></div></div>`;
-  h+=`<div class="card"><div style="font-weight:bold;font-size:13px;margin-bottom:10px;">Access Roles</div><div class="row"><span style="font-size:13px;font-weight:bold;">BOH Supervisor</span><span style="font-size:12px;color:#8a7a5a;">PIN: 9999 · Overview only</span></div><div class="row"><span style="font-size:13px;font-weight:bold;">Manager</span><span style="font-size:12px;color:#8a7a5a;">PIN: 1234 · Full access</span></div>`;
-  if(!roles.length)h+=`<div style="font-size:12px;color:#8a7a5a;font-style:italic;padding:8px 0;">No custom roles yet.</div>`;
-  else roles.forEach((r,i)=>{h+=`<div class="row"><div><div style="font-size:13px;font-weight:bold;">${r.name}</div><div style="font-size:11px;color:#8a7a5a;">PIN: ${r.pin} · Overview only</div></div><button onclick="removeRole(${i})" style="padding:4px 10px;border-radius:8px;border:1px solid #e0d8c8;background:#fff;font-size:12px;color:#9b2226;font-family:Georgia,serif;cursor:pointer;">Remove</button></div>`;});
+  h+=`<div style="display:flex;gap:8px;margin-top:12px;"><input type="text" id="newStaffName" placeholder="Add staff name..." class="full-input" style="border:1px solid #e0d8c8;"/><button onclick="addStaff()" style="padding:10px 14px;border-radius:8px;background:#1a2e22;color:#c8a55a;border:none;font-weight:bold;font-family:Georgia,serif;cursor:pointer;white-space:nowrap;">➕ Add</button></div><div id="staffMsg" style="margin-top:6px;font-size:12px;font-weight:bold;"></div></div>`;
+  h+=`<div class="card dashed" style="margin-bottom:14px;"><div style="font-weight:bold;font-size:13px;margin-bottom:12px;">➕ Add Supervisor Role</div><div class="field"><div class="field-label">Name</div><input type="text" id="roleName" placeholder="e.g. Head Chef" class="full-input" style="border:1px solid #e0d8c8;"/></div><div class="field"><div class="field-label">PIN (4–6 digits)</div><input type="text" inputmode="numeric" id="rolePin" placeholder="e.g. 5678" class="full-input" style="border:1px solid #e0d8c8;" maxlength="6"/></div><button onclick="addRole()" style="width:100%;padding:12px;border-radius:8px;background:#1a2e22;color:#c8a55a;border:none;font-weight:bold;font-size:14px;font-family:Georgia,serif;cursor:pointer;margin-top:4px;">➕ Add Role</button><div id="roleMsg" style="margin-top:8px;font-size:12px;text-align:center;font-weight:bold;"></div></div>`;
+  h+=`<div class="card"><div style="font-weight:bold;font-size:13px;margin-bottom:10px;">Access Roles</div><div class="row"><span style="font-size:13px;font-weight:bold;">BOH Supervisor</span><span style="font-size:12px;color:#7d6f5e;">PIN: 9999 · Overview only</span></div><div class="row"><span style="font-size:13px;font-weight:bold;">Manager</span><span style="font-size:12px;color:#7d6f5e;">PIN: 1234 · Full access</span></div>`;
+  if(!roles.length)h+=`<div style="font-size:12px;color:#7d6f5e;font-style:italic;padding:8px 0;">No custom roles yet.</div>`;
+  else roles.forEach((r,i)=>{h+=`<div class="row"><div><div style="font-size:13px;font-weight:bold;">${r.name}</div><div style="font-size:11px;color:#7d6f5e;">PIN: ${r.pin} · Overview only</div></div><button onclick="removeRole(${i})" style="padding:4px 10px;border-radius:8px;border:1px solid #e0d8c8;background:#fff;font-size:12px;color:#9b2226;font-family:Georgia,serif;cursor:pointer;">Remove</button></div>`;});
   h+='</div>';el.innerHTML=h;
 }
 function addStaff(){const inp=document.getElementById('newStaffName');const name=inp.value.trim();const msg=document.getElementById('staffMsg');if(!name){msg.textContent='Enter a name.';msg.style.color='#9b2226';return;}if(getStaffList().map(n=>n.toLowerCase()).includes(name.toLowerCase())){msg.textContent='Already exists.';msg.style.color='#9b2226';return;}if(!S.customStaff)S.customStaff=[];S.customStaff.push(name);persist();msg.textContent='✓ '+name+' added.';msg.style.color='#2d6a4f';inp.value='';setTimeout(()=>{msg.textContent='';},3000);renderRoles();}
